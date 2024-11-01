@@ -114,7 +114,7 @@ public class CSVImporter {
     private static Node findOrCreateNode(GraphDatabaseService db, RoadConnection connection) {
         Node node;
         try (Transaction tx = db.beginTx()) {
-            node = tx.findNode(Label.label("RoadChain"), "gridId", connection.getGridId(), "chainId", connection.getChainId());
+            node = tx.findNode(Label.label("RoadChain"), "gridId", connection.getGridId());
             if (node == null) {
                 node = tx.createNode(Label.label("RoadChain"));
                 node.setProperty("gridId", connection.getGridId());
@@ -132,7 +132,7 @@ public class CSVImporter {
     }
 
     public static void main(final String[] args) throws IOException {
-        File csvFile = new File("topo.csv");
+        File csvFile = new File("D:\\Desktop\\study\\buaa\\neo4j_1\\src\\main\\java\\org\\example\\Topo.csv");
         neo4j neo4j_Bj = new neo4j();
         neo4j_Bj.createDb();
         importCSV(csvFile, neo4j_Bj.graphDb);

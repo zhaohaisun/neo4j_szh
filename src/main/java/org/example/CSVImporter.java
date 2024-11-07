@@ -1,5 +1,6 @@
 package org.example;
 
+import org.antlr.v4.runtime.misc.Pair;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
@@ -13,7 +14,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class CSVImporter {
@@ -47,54 +50,62 @@ public class CSVImporter {
                 int outCount = Integer.parseInt(tokens[7]);
                 int direction = Integer.parseInt(tokens[8]);
 
-                List<RoadConnection> in_connections = new ArrayList<>();
-                List<RoadConnection> out_connections = new ArrayList<>();
+                Set<Pair<Integer, Integer>> usedChains = new HashSet<>(); // 存储分配过的路链
+                String nodeIndex = gridId + "_" + chainId; // 为每个节点分配唯一的索引
+
+                Node crossNodesStart;
+                Node crossNodesEnd;
+                try (Transaction tx = db.beginTx()) {
+                    if(usedChains.contains(new Pair<>(gridId, chainId))) {
+                        crossNodesStart = tx.findNode(Label.label("crossNodeStart"), "index", nodeIndex); // 标签为 `crossNode`，并且其属性 `index` 的值等于 `nodeIndex` 的节点
+                        crossNodesEnd = tx.findNode(Label.label("crossNodeEnd"), "index", nodeIndex);
+                    } else {
+                        crossNodesStart = tx.createNode(Label.label("crossNodeStart"));
+                        crossNodesStart.setProperty("index", nodeIndex);
+                        crossNodesEnd = tx.createNode(Label.label("crossNodeEnd"));
+                        crossNodesEnd.setProperty("index", nodeIndex);
+                        usedChains.add(new Pair<>(gridId, chainId));
+                    }
+                    tx.commit();
+                }
+
+                // Add the RoadChain and its connections to the database
+                try (Transaction tx = db.beginTx()) {
+                    Relationship road = crossNodesStart.createRelationshipTo(crossNodesEnd, RelType.ROAD_TO);
+
+                    road.setProperty("id", id);
+                    road.setProperty("gridId", gridId);
+
+                    road.setProperty("index", nodeIndex); // 添加的
+
+                    road.setProperty("chainId", chainId);
+                    road.setProperty("index", index);
+                    road.setProperty("length", length);
+                    road.setProperty("level", level);
+                    road.setProperty("inCount", inCount);
+                    road.setProperty("outCount", outCount);
+                    road.setProperty("direction", direction);
+
+                    tx.commit();
+                }
+
+                //List<RoadConnection> in_connections = new ArrayList<>();
+                //List<RoadConnection> out_connections = new ArrayList<>();
 
                 // Extract in-connections and out-connections (5-tuple information)
                 int currentIndex = 9;
                 for (int i = 0; i < inCount; i++) {
                     RoadConnection inConnection = parseRoadConnection(tokens, currentIndex);
-                    in_connections.add(inConnection);
+                    //in_connections.add(inConnection);
                     currentIndex += 5;
+                    nodeIndex = inConnection.getGridId() + "_" + inConnection.getChainId(); // 为每个节点分配唯一的索引
+
+
                 }
                 for (int i = 0; i < outCount; i++) {
                     RoadConnection outConnection = parseRoadConnection(tokens, currentIndex);
-                    out_connections.add(outConnection);
+                    //out_connections.add(outConnection);
                     currentIndex += 5;
-                }
-
-                RoadChain roadChain = new RoadChain(id, gridId, chainId, index, length, level, inCount, outCount, direction, in_connections, out_connections);
-
-                // Add the RoadChain and its connections to the database
-                try (Transaction tx = db.beginTx()) {
-                    Node roadChainNode = tx.createNode(Label.label("RoadChain"));
-                    roadChainNode.setProperty("id", roadChain.getId());
-                    roadChainNode.setProperty("gridId", roadChain.getGridId());
-                    roadChainNode.setProperty("chainId", roadChain.getChainId());
-                    roadChainNode.setProperty("index", roadChain.getIndex());
-                    roadChainNode.setProperty("length", roadChain.getLength());
-                    roadChainNode.setProperty("level", roadChain.getLevel());
-                    roadChainNode.setProperty("inCount", roadChain.getInCount());
-                    roadChainNode.setProperty("outCount", roadChain.getOutCount());
-                    roadChainNode.setProperty("direction", roadChain.getDirection());
-                    roadChainNode.setProperty("in_connections", roadChain.getInConnections());
-                    roadChainNode.setProperty("out_connections", roadChain.getOutConnections());
-
-                    // Create relationships for in-connections
-                    for (RoadConnection inConnection : roadChain.getInConnections()) {
-                        Node inNode = findOrCreateNode(db, inConnection);
-                        Relationship relationship = inNode.createRelationshipTo(roadChainNode, RelType.ROAD_TO);
-                        setConnectionProperties(relationship, inConnection);
-                    }
-
-                    // Create relationships for out-connections
-                    for (RoadConnection outConnection : roadChain.getOutConnections()) {
-                        Node outNode = findOrCreateNode(db, outConnection);
-                        Relationship relationship = roadChainNode.createRelationshipTo(outNode, RelType.ROAD_TO);
-                        setConnectionProperties(relationship, outConnection);
-                    }
-
-                    tx.commit();
                 }
             }
         } catch (IOException e) {
@@ -125,11 +136,6 @@ public class CSVImporter {
         return node;
     }
 
-    private static void setConnectionProperties(Relationship relationship, RoadConnection connection) {
-        relationship.setProperty("index", connection.getIndex());
-        relationship.setProperty("length", connection.getLength());
-        relationship.setProperty("direction", connection.getDirection());
-    }
 
     public static void main(final String[] args) throws IOException {
         File csvFile = new File("D:\\Desktop\\study\\buaa\\neo4j_1\\src\\main\\java\\org\\example\\Topo.csv");

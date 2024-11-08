@@ -50,56 +50,10 @@ public class CSVImporter {
                 int outCount = Integer.parseInt(tokens[7]);
                 int direction = Integer.parseInt(tokens[8]);
 
-                //Set<Pair<Integer, Integer>> usedChains = new HashSet<>(); // 存储分配过的路链
-                //String nodeIndex = gridId + "_" + chainId; // 为每个节点分配唯一的索引
                 Map<Pair<Integer, Integer>, Pair<Integer, Integer>> map = new HashMap<>(); // 存储路链->起始和终止节点
-                int startNode, endNode;
-                Node crossNodesStart;
-                Node crossNodesEnd;
-                try (Transaction tx = db.beginTx()) {
-                    if(map.containsKey(new Pair<>(gridId, chainId))) {
-                        //(gridId, chainId)key对应的值(startNode, endNode)
-                        Pair<Integer, Integer> retrieved = map.get(new Pair<>(gridId, chainId));
-                        startNode = retrieved.a;
-                        endNode = retrieved.b;
-                        crossNodesStart = tx.findNode(Label.label("crossNode"), "index", startNode); // 标签为 `crossNode`，并且其属性 `index` 的值等于 `nodeIndex` 的节点
-                        crossNodesEnd = tx.findNode(Label.label("crossNode"), "index", endNode);
-                    } else {
-                        crossNodesStart = tx.createNode(Label.label("crossNode"));
-                        startNode = nodeindex;
-                        crossNodesStart.setProperty("index", nodeindex++);
-                        crossNodesEnd = tx.createNode(Label.label("crossNode"));
-                        endNode = nodeindex;
-                        crossNodesEnd.setProperty("index", nodeindex++);
-                        map.put(new Pair<>(gridId, chainId), new Pair<>(startNode, endNode));
-                        Relationship road = crossNodesStart.createRelationshipTo(crossNodesEnd, RelType.ROAD_TO);
-                        //road.setProperty("id", id);
-                        road.setProperty("gridId", gridId);
-                        road.setProperty("chainId", chainId);
-                        //road.setProperty("index", index);
-                        //road.setProperty("length", length);
-                        //road.setProperty("level", level);
-                        //road.setProperty("inCount", inCount);
-                        //road.setProperty("outCount", outCount);
-                        //road.setProperty("direction", direction);
-                    }
-                    tx.commit();
-                }
-
-                /* Add the RoadChain and its connections to the database
-                try (Transaction tx = db.beginTx()) {
-                    Relationship road = crossNodesStart.createRelationshipTo(crossNodesEnd, RelType.ROAD_TO);
-                    //road.setProperty("id", id);
-                    road.setProperty("gridId", gridId);
-                    road.setProperty("chainId", chainId);
-                    //road.setProperty("index", index);
-                    //road.setProperty("length", length);
-                    road.setProperty("level", level);
-                    road.setProperty("inCount", inCount);
-                    road.setProperty("outCount", outCount);
-                    //road.setProperty("direction", direction);
-                    tx.commit();
-                }*/
+                int startNode = 0, endNode = 0;
+                Node crossNodesStart = null;
+                Node crossNodesEnd = null;
 
                 // 遍历所有的in_connections和out_connections，找是否和外面有连接
                 List<RoadConnection> in_connections = new ArrayList<>();
@@ -113,11 +67,118 @@ public class CSVImporter {
                     RoadConnection inConnection = parseRoadConnection(tokens, currentIndex);
                     in_connections.add(inConnection);
                     currentIndex += 5;
+                    if(map.containsKey(new Pair<>(inConnection.getGridId(), inConnection.getChainId()))) {
+                        hasConnectIn = true;
+                    }
                 }
                 for (int i = 0; i < outCount; i++) {
                     RoadConnection outConnection = parseRoadConnection(tokens, currentIndex);
                     out_connections.add(outConnection);
                     currentIndex += 5;
+                    if(map.containsKey(new Pair<>(outConnection.getGridId(), outConnection.getChainId()))) {
+                        hasConnectOut = true;
+                    }
+                }
+
+                // create 主链
+                if(map.containsKey(new Pair<>(gridId, chainId))) { // 如果主链在map中，则忽略
+                    continue;
+                }
+                if((!hasConnectIn) && (!hasConnectOut)) {
+                    try (Transaction tx = db.beginTx()) {
+                        crossNodesStart = tx.createNode(Label.label("crossNode"));
+                        startNode = nodeindex;
+                        crossNodesStart.setProperty("index", nodeindex++);
+                        crossNodesEnd = tx.createNode(Label.label("crossNode"));
+                        endNode = nodeindex;
+                        crossNodesEnd.setProperty("index", nodeindex++);
+                        tx.commit();
+                    }
+                }
+                else if(hasConnectIn && !hasConnectOut) {
+                    for(RoadConnection inConnection : in_connections) {
+                        if(map.containsKey(new Pair<>(inConnection.getGridId(), inConnection.getChainId()))) {
+                            startNode = map.get(new Pair<>(inConnection.getGridId(), inConnection.getChainId())).b;
+                            try (Transaction tx = db.beginTx()) {
+                                crossNodesStart = tx.findNode(Label.label("crossNode"), "index", startNode);
+                                endNode = nodeindex;
+                                crossNodesEnd = tx.createNode(Label.label("crossNode"));
+                                crossNodesEnd.setProperty("index", nodeindex++);
+                                tx.commit();
+                            }
+                        }
+                    }
+                }
+                else if(!hasConnectIn && hasConnectOut) {
+                    for(RoadConnection outConnection : out_connections) {
+                        if(map.containsKey(new Pair<>(outConnection.getGridId(), outConnection.getChainId()))) {
+                            endNode = map.get(new Pair<>(outConnection.getGridId(), outConnection.getChainId())).a;
+                            try (Transaction tx = db.beginTx()) {
+                                crossNodesEnd = tx.findNode(Label.label("crossNode"), "index", endNode);
+                                startNode = nodeindex;
+                                crossNodesStart = tx.createNode(Label.label("crossNode"));
+                                crossNodesStart.setProperty("index", nodeindex++);
+                                tx.commit();
+                            }
+                        }
+                    }
+                }
+                else {
+                    for(RoadConnection inConnection : in_connections) {
+                        if(map.containsKey(new Pair<>(inConnection.getGridId(), inConnection.getChainId()))) {
+                            startNode = map.get(new Pair<>(inConnection.getGridId(), inConnection.getChainId())).b;
+                            try (Transaction tx = db.beginTx()) {
+                                crossNodesStart = tx.findNode(Label.label("crossNode"), "index", startNode);
+                            }
+                        }
+                    }
+                    for(RoadConnection outConnection : out_connections) {
+                        if(map.containsKey(new Pair<>(outConnection.getGridId(), outConnection.getChainId()))) {
+                            endNode = map.get(new Pair<>(outConnection.getGridId(), outConnection.getChainId())).a;
+                        }
+                    }
+                }
+                try (Transaction tx = db.beginTx()) {
+                    map.put(new Pair<>(gridId, chainId), new Pair<>(startNode, endNode));
+                    Relationship road = crossNodesStart.createRelationshipTo(crossNodesEnd, RelType.ROAD_TO);
+                    road.setProperty("gridId", gridId);
+                    road.setProperty("chainId", chainId);
+                    tx.commit();
+                }
+
+                // 添加入链（对 主链来说）
+                for(RoadConnection inConnection : in_connections) {
+                    if(map.containsKey(new Pair<>(inConnection.getGridId(), inConnection.getChainId()))) {
+                        continue;
+                    }
+                    try (Transaction tx = db.beginTx()) {
+                        Node crossNodesStartIn = tx.createNode(Label.label("crossNode")); // 左边创一个节点
+                        int startNodeIn = nodeindex;
+                        crossNodesStartIn.setProperty("index", nodeindex++);
+                        //Node crossNodesEndIn = tx.findNode(Label.label("crossNode"), "index", startNode);
+                        Relationship road = crossNodesStartIn.createRelationshipTo(crossNodesStart, RelType.ROAD_TO);
+                        road.setProperty("gridId", inConnection.getGridId());
+                        road.setProperty("chainId", inConnection.getChainId());
+                        tx.commit();
+                        map.put(new Pair<>(inConnection.getGridId(), inConnection.getChainId()), new Pair<>(startNodeIn, startNode));
+                    }
+                }
+                // 添加出链（对 主链来说）
+                for(RoadConnection outConnection : out_connections) {
+                    if(map.containsKey(new Pair<>(outConnection.getGridId(), outConnection.getChainId()))) {
+                        continue;
+                    }
+                    try (Transaction tx = db.beginTx()) {
+                        Node crossNodesEndOut = tx.createNode(Label.label("crossNode")); // 右边创一个节点
+                        int endNodeOut = nodeindex;
+                        crossNodesEndOut.setProperty("index", nodeindex++);
+                        //Node crossNodesStartOut = tx.findNode(Label.label("crossNode"), "index", endNode);
+                        Relationship road = crossNodesEnd.createRelationshipTo(crossNodesEndOut, RelType.ROAD_TO);
+                        road.setProperty("gridId", outConnection.getGridId());
+                        road.setProperty("chainId", outConnection.getChainId());
+                        tx.commit();
+                        map.put(new Pair<>(outConnection.getGridId(), outConnection.getChainId()), new Pair<>(endNode, endNodeOut));
+                    }
                 }
             }
         } catch (IOException e) {
@@ -132,19 +193,6 @@ public class CSVImporter {
         int length = Integer.parseInt(tokens[startIndex + 3]);
         int direction = Integer.parseInt(tokens[startIndex + 4]);
         return new RoadConnection(gridId, chainId, index, length, direction);
-    }
-
-    private static Node findOrCreateNode(GraphDatabaseService db, int index) {
-        Node node;
-        try (Transaction tx = db.beginTx()) {
-            node = tx.findNode(Label.label("crossNode"), "index", index);
-            if (node == null) {
-                node = tx.createNode(Label.label("crossNode"));
-                node.setProperty("index", index);
-            }
-            tx.commit();
-        }
-        return node;
     }
 
 

@@ -1,6 +1,7 @@
 package org.example;
 
 import org.antlr.v4.runtime.misc.Pair;
+import org.neo4j.cypher.internal.expressions.In;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
@@ -8,15 +9,13 @@ import org.neo4j.graphdb.Transaction;
 //import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.RelationshipType;
+import scala.Int;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 public class CSVImporter {
@@ -29,6 +28,7 @@ public class CSVImporter {
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             String line;
             boolean isFirstLine = true;
+            int nodeindex = 0;
 
             // Skip the first line as it contains field names
             while ((line = br.readLine()) != null) {
@@ -51,19 +51,25 @@ public class CSVImporter {
                 int direction = Integer.parseInt(tokens[8]);
 
                 Set<Pair<Integer, Integer>> usedChains = new HashSet<>(); // 存储分配过的路链
-                String nodeIndex = gridId + "_" + chainId; // 为每个节点分配唯一的索引
+                //String nodeIndex = gridId + "_" + chainId; // 为每个节点分配唯一的索引
+                Map<Pair<Integer, Integer>, Pair<Integer, Integer>> map = new HashMap<>(); // 存储路链->起始和终止节点
 
                 Node crossNodesStart;
                 Node crossNodesEnd;
                 try (Transaction tx = db.beginTx()) {
-                    if(usedChains.contains(new Pair<>(gridId, chainId))) {
-                        crossNodesStart = tx.findNode(Label.label("crossNodeStart"), "index", nodeIndex); // 标签为 `crossNode`，并且其属性 `index` 的值等于 `nodeIndex` 的节点
-                        crossNodesEnd = tx.findNode(Label.label("crossNodeEnd"), "index", nodeIndex);
+                    if(map.containsKey(new Pair<>(gridId, chainId))) {
+                        //(gridId, chainId)key对应的值(startNode, endNode)
+                        Integer startNode, endNode;
+                        Pair<Integer, Integer> retrieved = map.get(new Pair<>(gridId, chainId));
+                        startNode = retrieved.a;
+                        endNode = retrieved.b;
+                        crossNodesStart = tx.findNode(Label.label("crossNode"), "index", startNode); // 标签为 `crossNode`，并且其属性 `index` 的值等于 `nodeIndex` 的节点
+                        crossNodesEnd = tx.findNode(Label.label("crossNode"), "index", endNode);
                     } else {
-                        crossNodesStart = tx.createNode(Label.label("crossNodeStart"));
-                        crossNodesStart.setProperty("index", nodeIndex);
-                        crossNodesEnd = tx.createNode(Label.label("crossNodeEnd"));
-                        crossNodesEnd.setProperty("index", nodeIndex);
+                        crossNodesStart = tx.createNode(Label.label("crossNode"));
+                        crossNodesStart.setProperty("index", nodeindex++);
+                        crossNodesEnd = tx.createNode(Label.label("crossNode"));
+                        crossNodesEnd.setProperty("index", nodeindex++);
                         usedChains.add(new Pair<>(gridId, chainId));
                     }
                     tx.commit();
@@ -73,18 +79,16 @@ public class CSVImporter {
                 try (Transaction tx = db.beginTx()) {
                     Relationship road = crossNodesStart.createRelationshipTo(crossNodesEnd, RelType.ROAD_TO);
 
-                    road.setProperty("id", id);
+                    //road.setProperty("id", id);
                     road.setProperty("gridId", gridId);
 
-                    road.setProperty("index", nodeIndex); // 添加的
-
                     road.setProperty("chainId", chainId);
-                    road.setProperty("index", index);
-                    road.setProperty("length", length);
+                    //road.setProperty("index", index);
+                    //road.setProperty("length", length);
                     road.setProperty("level", level);
                     road.setProperty("inCount", inCount);
                     road.setProperty("outCount", outCount);
-                    road.setProperty("direction", direction);
+                    //road.setProperty("direction", direction);
 
                     tx.commit();
                 }
@@ -98,8 +102,6 @@ public class CSVImporter {
                     RoadConnection inConnection = parseRoadConnection(tokens, currentIndex);
                     //in_connections.add(inConnection);
                     currentIndex += 5;
-                    nodeIndex = inConnection.getGridId() + "_" + inConnection.getChainId(); // 为每个节点分配唯一的索引
-
 
                 }
                 for (int i = 0; i < outCount; i++) {

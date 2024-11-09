@@ -1,9 +1,9 @@
-2024-11-09 05:16:00.077+0000 INFO  [o.n.g.f.m.GlobalModule] Logging config in use: Embedded default config 'default-server-logs.xml'
-2024-11-09 05:16:00.540+0000 WARN  [o.n.k.i.JvmChecker] The max heap memory has not been configured. It is recommended that it is always explicitly configured, to ensure the system has a balanced configuration. Until then, a JVM computed heuristic of 4257218560 bytes is used instead. If you are running neo4j server, you need to configure server.memory.heap.max_size in neo4j.conf. If you are running neo4j embedded, you have to launch the JVM with -Xmx set to a value. You can run neo4j-admin server memory-recommendation for memory configuration suggestions.
-2024-11-09 05:16:00.540+0000 WARN  [o.n.k.i.JvmChecker] The initial heap memory has not been configured. It is recommended that it is always explicitly configured, to ensure the system has a balanced configuration. Until then, a JVM computed heuristic of 266338304 bytes is used instead. If you are running neo4j server, you need to configure server.memory.heap.initial_size in neo4j.conf. If you are running neo4j embedded, you have to launch the JVM with -Xms set to a value. You can run neo4j-admin server memory-recommendation for memory configuration suggestions.
-2024-11-09 05:16:00.643+0000 WARN  [o.n.i.p.PageCache] The server.memory.pagecache.size setting has not been configured. It is recommended that this setting is always explicitly configured, to ensure the system has a balanced configuration. Until then, a computed heuristic value of 6383366144 bytes will be used instead. Run `neo4j-admin memory-recommendation` for memory configuration suggestions.
-2024-11-09 05:16:00.643+0000 WARN  [o.n.i.p.PageCache] Reflection access to java.nio.DirectByteBuffer is not available, using fallback mode. This could have negative impact on performance and memory usage. Consider adding --add-opens=java.base/java.nio=ALL-UNNAMED to VM options.
-2024-11-09 05:16:01.030+0000 INFO  [o.n.i.d.DiagnosticsManager] 
+2024-11-09 05:30:31.687+0000 INFO  [o.n.g.f.m.GlobalModule] Logging config in use: Embedded default config 'default-server-logs.xml'
+2024-11-09 05:30:32.083+0000 WARN  [o.n.k.i.JvmChecker] The max heap memory has not been configured. It is recommended that it is always explicitly configured, to ensure the system has a balanced configuration. Until then, a JVM computed heuristic of 4257218560 bytes is used instead. If you are running neo4j server, you need to configure server.memory.heap.max_size in neo4j.conf. If you are running neo4j embedded, you have to launch the JVM with -Xmx set to a value. You can run neo4j-admin server memory-recommendation for memory configuration suggestions.
+2024-11-09 05:30:32.083+0000 WARN  [o.n.k.i.JvmChecker] The initial heap memory has not been configured. It is recommended that it is always explicitly configured, to ensure the system has a balanced configuration. Until then, a JVM computed heuristic of 266338304 bytes is used instead. If you are running neo4j server, you need to configure server.memory.heap.initial_size in neo4j.conf. If you are running neo4j embedded, you have to launch the JVM with -Xms set to a value. You can run neo4j-admin server memory-recommendation for memory configuration suggestions.
+2024-11-09 05:30:32.133+0000 WARN  [o.n.i.p.PageCache] The server.memory.pagecache.size setting has not been configured. It is recommended that this setting is always explicitly configured, to ensure the system has a balanced configuration. Until then, a computed heuristic value of 6383366144 bytes will be used instead. Run `neo4j-admin memory-recommendation` for memory configuration suggestions.
+2024-11-09 05:30:32.133+0000 WARN  [o.n.i.p.PageCache] Reflection access to java.nio.DirectByteBuffer is not available, using fallback mode. This could have negative impact on performance and memory usage. Consider adding --add-opens=java.base/java.nio=ALL-UNNAMED to VM options.
+2024-11-09 05:30:32.508+0000 INFO  [o.n.i.d.DiagnosticsManager] 
                                                                 ********************************************************************************
                                                                                              [ System diagnostics ]                             
                                                                 ********************************************************************************
@@ -11,33 +11,33 @@
                                                                                          [ System memory information ]                          
                                                                 --------------------------------------------------------------------------------
                                                                 Total Physical memory: 15.85GiB
-                                                                Free Physical memory: 4.409GiB
-                                                                Committed virtual memory: 309.2MiB
+                                                                Free Physical memory: 5.076GiB
+                                                                Committed virtual memory: 468.9MiB
                                                                 Total swap space: 21.86GiB
-                                                                Free swap space: 5.349GiB
+                                                                Free swap space: 4.761GiB
                                                                 
                                                                 --------------------------------------------------------------------------------
                                                                                            [ JVM memory information ]                           
                                                                 --------------------------------------------------------------------------------
-                                                                Free  memory: 67.94MiB
-                                                                Total memory: 100.0MiB
+                                                                Free  memory: 137.1MiB
+                                                                Total memory: 254.0MiB
                                                                 Max   memory: 3.965GiB
                                                                 Garbage Collector: G1 Young Generation: [G1 Eden Space, G1 Survivor Space, G1 Old Gen]
                                                                 Garbage Collector: G1 Old Generation: [G1 Eden Space, G1 Survivor Space, G1 Old Gen]
-                                                                Memory Pool: CodeHeap 'non-nmethods' (Non-heap memory): committed=3.000MiB, used=2.890MiB, max=7.313MiB, threshold=0B
-                                                                Memory Pool: Metaspace (Non-heap memory): committed=21.88MiB, used=21.54MiB, max=-1B, threshold=0B
-                                                                Memory Pool: CodeHeap 'profiled nmethods' (Non-heap memory): committed=5.625MiB, used=5.592MiB, max=116.3MiB, threshold=0B
-                                                                Memory Pool: Compressed Class Space (Non-heap memory): committed=2.500MiB, used=2.347MiB, max=1.000GiB, threshold=0B
-                                                                Memory Pool: G1 Eden Space (Heap memory): committed=72.00MiB, used=4.000MiB, max=-1B, threshold=?
-                                                                Memory Pool: G1 Old Gen (Heap memory): committed=18.00MiB, used=17.17MiB, max=3.965GiB, threshold=0B
-                                                                Memory Pool: G1 Survivor Space (Heap memory): committed=10.00MiB, used=9.886MiB, max=-1B, threshold=?
-                                                                Memory Pool: CodeHeap 'non-profiled nmethods' (Non-heap memory): committed=2.438MiB, used=1.676MiB, max=116.4MiB, threshold=0B
+                                                                Memory Pool: CodeHeap 'non-nmethods' (Non-heap memory): committed=3.000MiB, used=2.881MiB, max=7.313MiB, threshold=0B
+                                                                Memory Pool: Metaspace (Non-heap memory): committed=20.81MiB, used=20.45MiB, max=-1B, threshold=0B
+                                                                Memory Pool: CodeHeap 'profiled nmethods' (Non-heap memory): committed=5.438MiB, used=5.395MiB, max=116.3MiB, threshold=0B
+                                                                Memory Pool: Compressed Class Space (Non-heap memory): committed=2.313MiB, used=2.158MiB, max=1.000GiB, threshold=0B
+                                                                Memory Pool: G1 Eden Space (Heap memory): committed=156.0MiB, used=96.00MiB, max=-1B, threshold=?
+                                                                Memory Pool: G1 Old Gen (Heap memory): committed=94.00MiB, used=15.99MiB, max=3.965GiB, threshold=0B
+                                                                Memory Pool: G1 Survivor Space (Heap memory): committed=4.000MiB, used=3.917MiB, max=-1B, threshold=?
+                                                                Memory Pool: CodeHeap 'non-profiled nmethods' (Non-heap memory): committed=2.438MiB, used=1.720MiB, max=116.4MiB, threshold=0B
                                                                 
                                                                 --------------------------------------------------------------------------------
                                                                                         [ Operating system information ]                        
                                                                 --------------------------------------------------------------------------------
                                                                 Operating System: Windows 11; version: 10.0; arch: amd64; cpus: 16
-                                                                Process id: 10864
+                                                                Process id: 21280
                                                                 Byte order: LITTLE_ENDIAN
                                                                 Local timezone: Asia/Shanghai
                                                                 Memory page size: 4096
@@ -50,7 +50,7 @@
                                                                 VM Vendor: Oracle Corporation
                                                                 VM Version: 17.0.12+8-LTS-286
                                                                 JIT compiler: HotSpot 64-Bit Tiered Compilers
-                                                                VM Arguments: [-javaagent:D:\apps\IntelliJ IDEA 2024.2.3\lib\idea_rt.jar=56840:D:\apps\IntelliJ IDEA 2024.2.3\bin, -Dfile.encoding=UTF-8]
+                                                                VM Arguments: [-javaagent:D:\apps\IntelliJ IDEA 2024.2.3\lib\idea_rt.jar=57692:D:\apps\IntelliJ IDEA 2024.2.3\bin, -Dfile.encoding=UTF-8]
                                                                 
                                                                 --------------------------------------------------------------------------------
                                                                                                [ Java classpath ]                               
@@ -364,7 +364,7 @@
                                                                 user.name = 19607
                                                                 path.separator = ;
                                                                 file.encoding = UTF-8
-                                                                jnidispatch.path = C:\Users\19607\AppData\Local\Temp\jna-47004053\jna13172665863211765577.dll
+                                                                jnidispatch.path = C:\Users\19607\AppData\Local\Temp\jna-47004053\jna5617786273637318476.dll
                                                                 jna.loaded = true
                                                                 user.dir = D:\Desktop\study\buaa\neo4j_1
                                                                 sun.os.patch.level = 
@@ -510,11 +510,11 @@
                                                                 --------------------------------------------------------------------------------
                                                                 packaging_info is not available.
                                                                 
-2024-11-09 05:16:01.091+0000 INFO  [o.n.d.i.DefaultIdentityModule] Generated new ServerId: ServerId{976250ea} (976250ea-85a5-478a-ab7e-9c2b2ab380b6)
-2024-11-09 05:16:01.092+0000 INFO  [o.n.d.i.DefaultIdentityModule] This instance is ServerId{976250ea} (976250ea-85a5-478a-ab7e-9c2b2ab380b6)
-2024-11-09 05:16:02.317+0000 INFO  [o.n.d.d.DatabaseLifecycles] Creating 'DatabaseId{00000000[system]}'.
-2024-11-09 05:16:02.522+0000 INFO  [o.n.d.d.DatabaseLifecycles] Starting 'DatabaseId{00000000[system]}'.
-2024-11-09 05:16:03.354+0000 INFO  [o.n.i.d.DiagnosticsManager] [system/00000000] 
+2024-11-09 05:30:32.589+0000 INFO  [o.n.d.i.DefaultIdentityModule] Generated new ServerId: ServerId{a7b503ae} (a7b503ae-f490-44d3-be80-44378dbfa1a9)
+2024-11-09 05:30:32.590+0000 INFO  [o.n.d.i.DefaultIdentityModule] This instance is ServerId{a7b503ae} (a7b503ae-f490-44d3-be80-44378dbfa1a9)
+2024-11-09 05:30:33.879+0000 INFO  [o.n.d.d.DatabaseLifecycles] Creating 'DatabaseId{00000000[system]}'.
+2024-11-09 05:30:34.087+0000 INFO  [o.n.d.d.DatabaseLifecycles] Starting 'DatabaseId{00000000[system]}'.
+2024-11-09 05:30:34.896+0000 INFO  [o.n.i.d.DiagnosticsManager] [system/00000000] 
                                                                 [system/00000000] ********************************************************************************
                                                                 [system/00000000]                               [ Database: system ]                              
                                                                 [system/00000000] ********************************************************************************
@@ -527,41 +527,41 @@
                                                                 [system/00000000] --------------------------------------------------------------------------------
                                                                 [system/00000000]                                 [ Store files ]                                 
                                                                 [system/00000000] --------------------------------------------------------------------------------
-                                                                [system/00000000] Disk space on partition (Total / Free / Free %): 1000186310656 / 221677080576 / 22
+                                                                [system/00000000] Disk space on partition (Total / Free / Free %): 1000186310656 / 221676826624 / 22
                                                                 [system/00000000] Storage files stored on file store: NTFS
                                                                 [system/00000000] Storage files: (filename : modification date - size)
-                                                                [system/00000000]   neostore: 2024-11-09 05:16:03.202+0000 - 8.000KiB
-                                                                [system/00000000]   neostore.counts.db: 2024-11-09 05:16:03.224+0000 - 0B
-                                                                [system/00000000]   neostore.indexstats.db: 2024-11-09 05:16:03.240+0000 - 0B
-                                                                [system/00000000]   neostore.labeltokenstore.db: 2024-11-09 05:16:03.189+0000 - 0B
-                                                                [system/00000000]   neostore.labeltokenstore.db.id: 2024-11-09 05:16:03.189+0000 - 0B
-                                                                [system/00000000]   neostore.labeltokenstore.db.names: 2024-11-09 05:16:03.186+0000 - 8.000KiB
-                                                                [system/00000000]   neostore.labeltokenstore.db.names.id: 2024-11-09 05:16:03.185+0000 - 0B
-                                                                [system/00000000]   neostore.nodestore.db: 2024-11-09 05:16:03.163+0000 - 0B
-                                                                [system/00000000]   neostore.nodestore.db.id: 2024-11-09 05:16:03.162+0000 - 0B
-                                                                [system/00000000]   neostore.nodestore.db.labels: 2024-11-09 05:16:03.145+0000 - 8.000KiB
-                                                                [system/00000000]   neostore.nodestore.db.labels.id: 2024-11-09 05:16:03.116+0000 - 0B
-                                                                [system/00000000]   neostore.propertystore.db: 2024-11-09 05:16:03.178+0000 - 0B
-                                                                [system/00000000]   neostore.propertystore.db.arrays: 2024-11-09 05:16:03.174+0000 - 8.000KiB
-                                                                [system/00000000]   neostore.propertystore.db.arrays.id: 2024-11-09 05:16:03.173+0000 - 0B
-                                                                [system/00000000]   neostore.propertystore.db.id: 2024-11-09 05:16:03.177+0000 - 0B
-                                                                [system/00000000]   neostore.propertystore.db.index: 2024-11-09 05:16:03.169+0000 - 0B
-                                                                [system/00000000]   neostore.propertystore.db.index.id: 2024-11-09 05:16:03.169+0000 - 0B
-                                                                [system/00000000]   neostore.propertystore.db.index.keys: 2024-11-09 05:16:03.165+0000 - 8.000KiB
-                                                                [system/00000000]   neostore.propertystore.db.index.keys.id: 2024-11-09 05:16:03.164+0000 - 0B
-                                                                [system/00000000]   neostore.propertystore.db.strings: 2024-11-09 05:16:03.171+0000 - 8.000KiB
-                                                                [system/00000000]   neostore.propertystore.db.strings.id: 2024-11-09 05:16:03.170+0000 - 0B
-                                                                [system/00000000]   neostore.relationshipgroupstore.db: 2024-11-09 05:16:03.195+0000 - 8.000KiB
-                                                                [system/00000000]   neostore.relationshipgroupstore.db.id: 2024-11-09 05:16:03.194+0000 - 0B
-                                                                [system/00000000]   neostore.relationshipgroupstore.degrees.db: 2024-11-09 05:16:03.234+0000 - 0B
-                                                                [system/00000000]   neostore.relationshipstore.db: 2024-11-09 05:16:03.180+0000 - 0B
-                                                                [system/00000000]   neostore.relationshipstore.db.id: 2024-11-09 05:16:03.180+0000 - 0B
-                                                                [system/00000000]   neostore.relationshiptypestore.db: 2024-11-09 05:16:03.185+0000 - 0B
-                                                                [system/00000000]   neostore.relationshiptypestore.db.id: 2024-11-09 05:16:03.184+0000 - 0B
-                                                                [system/00000000]   neostore.relationshiptypestore.db.names: 2024-11-09 05:16:03.182+0000 - 8.000KiB
-                                                                [system/00000000]   neostore.relationshiptypestore.db.names.id: 2024-11-09 05:16:03.181+0000 - 0B
-                                                                [system/00000000]   neostore.schemastore.db: 2024-11-09 05:16:03.192+0000 - 8.000KiB
-                                                                [system/00000000]   neostore.schemastore.db.id: 2024-11-09 05:16:03.191+0000 - 0B
+                                                                [system/00000000]   neostore: 2024-11-09 05:30:34.767+0000 - 8.000KiB
+                                                                [system/00000000]   neostore.counts.db: 2024-11-09 05:30:34.786+0000 - 0B
+                                                                [system/00000000]   neostore.indexstats.db: 2024-11-09 05:30:34.802+0000 - 0B
+                                                                [system/00000000]   neostore.labeltokenstore.db: 2024-11-09 05:30:34.754+0000 - 0B
+                                                                [system/00000000]   neostore.labeltokenstore.db.id: 2024-11-09 05:30:34.753+0000 - 0B
+                                                                [system/00000000]   neostore.labeltokenstore.db.names: 2024-11-09 05:30:34.750+0000 - 8.000KiB
+                                                                [system/00000000]   neostore.labeltokenstore.db.names.id: 2024-11-09 05:30:34.750+0000 - 0B
+                                                                [system/00000000]   neostore.nodestore.db: 2024-11-09 05:30:34.727+0000 - 0B
+                                                                [system/00000000]   neostore.nodestore.db.id: 2024-11-09 05:30:34.726+0000 - 0B
+                                                                [system/00000000]   neostore.nodestore.db.labels: 2024-11-09 05:30:34.708+0000 - 8.000KiB
+                                                                [system/00000000]   neostore.nodestore.db.labels.id: 2024-11-09 05:30:34.681+0000 - 0B
+                                                                [system/00000000]   neostore.propertystore.db: 2024-11-09 05:30:34.743+0000 - 0B
+                                                                [system/00000000]   neostore.propertystore.db.arrays: 2024-11-09 05:30:34.738+0000 - 8.000KiB
+                                                                [system/00000000]   neostore.propertystore.db.arrays.id: 2024-11-09 05:30:34.737+0000 - 0B
+                                                                [system/00000000]   neostore.propertystore.db.id: 2024-11-09 05:30:34.742+0000 - 0B
+                                                                [system/00000000]   neostore.propertystore.db.index: 2024-11-09 05:30:34.733+0000 - 0B
+                                                                [system/00000000]   neostore.propertystore.db.index.id: 2024-11-09 05:30:34.733+0000 - 0B
+                                                                [system/00000000]   neostore.propertystore.db.index.keys: 2024-11-09 05:30:34.729+0000 - 8.000KiB
+                                                                [system/00000000]   neostore.propertystore.db.index.keys.id: 2024-11-09 05:30:34.728+0000 - 0B
+                                                                [system/00000000]   neostore.propertystore.db.strings: 2024-11-09 05:30:34.735+0000 - 8.000KiB
+                                                                [system/00000000]   neostore.propertystore.db.strings.id: 2024-11-09 05:30:34.734+0000 - 0B
+                                                                [system/00000000]   neostore.relationshipgroupstore.db: 2024-11-09 05:30:34.760+0000 - 8.000KiB
+                                                                [system/00000000]   neostore.relationshipgroupstore.db.id: 2024-11-09 05:30:34.759+0000 - 0B
+                                                                [system/00000000]   neostore.relationshipgroupstore.degrees.db: 2024-11-09 05:30:34.796+0000 - 0B
+                                                                [system/00000000]   neostore.relationshipstore.db: 2024-11-09 05:30:34.744+0000 - 0B
+                                                                [system/00000000]   neostore.relationshipstore.db.id: 2024-11-09 05:30:34.744+0000 - 0B
+                                                                [system/00000000]   neostore.relationshiptypestore.db: 2024-11-09 05:30:34.749+0000 - 0B
+                                                                [system/00000000]   neostore.relationshiptypestore.db.id: 2024-11-09 05:30:34.748+0000 - 0B
+                                                                [system/00000000]   neostore.relationshiptypestore.db.names: 2024-11-09 05:30:34.746+0000 - 8.000KiB
+                                                                [system/00000000]   neostore.relationshiptypestore.db.names.id: 2024-11-09 05:30:34.745+0000 - 0B
+                                                                [system/00000000]   neostore.schemastore.db: 2024-11-09 05:30:34.756+0000 - 8.000KiB
+                                                                [system/00000000]   neostore.schemastore.db.id: 2024-11-09 05:30:34.755+0000 - 0B
                                                                 [system/00000000] Storage summary: 
                                                                 [system/00000000]   Total size of store: 72.00KiB
                                                                 [system/00000000]   Total size of mapped files: 72.00KiB
@@ -602,180 +602,180 @@
                                                                 [system/00000000] --------------------------------------------------------------------------------
                                                                 [system/00000000]                                   [ Metadata ]                                  
                                                                 [system/00000000] --------------------------------------------------------------------------------
-                                                                [system/00000000] EXTERNAL_STORE_UUID (Database identifier exposed as external store identity. Generated on creation and never updated): 33f627ef-3060-4864-a4cc-087b0e5d84f2
+                                                                [system/00000000] EXTERNAL_STORE_UUID (Database identifier exposed as external store identity. Generated on creation and never updated): 88eb2fef-5ddc-4c1c-86f8-3f08854e5712
                                                                 [system/00000000] DATABASE_ID (The last used DatabaseId for this database): null
                                                                 [system/00000000] LEGACY_STORE_VERSION (Legacy store format version. This field is used from 5.0 onwards only to distinguish non-migrated pre 5.0 metadata stores.): -3523014627327384477
-                                                                [system/00000000] STORE_ID (Store ID): StoreId{creationTime=1731129363201, random=-821287737525126268, storageEngineName='record', formatName='aligned', majorVersion=1, minorVersion=1}
+                                                                [system/00000000] STORE_ID (Store ID): StoreId{creationTime=1731130234766, random=-4030795610877606305, storageEngineName='record', formatName='aligned', majorVersion=1, minorVersion=1}
                                                                 [system/00000000] 
-2024-11-09 05:16:03.372+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [system/00000000] Requirement `Database unavailable` makes database system unavailable.
-2024-11-09 05:16:03.372+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [system/00000000] DatabaseId{00000000[system]} is unavailable.
-2024-11-09 05:16:03.389+0000 WARN  [o.n.k.i.s.MetaDataStore] [system/00000000] Missing counts store, rebuilding it.
-2024-11-09 05:16:03.395+0000 WARN  [o.n.k.i.s.MetaDataStore] [system/00000000] Counts store rebuild completed.
-2024-11-09 05:16:03.406+0000 INFO  [o.n.k.d.Database] [system/00000000] Starting transaction log [D:\Desktop\study\buaa\neo4j_1\neo4j\data\transactions\system\neostore.transaction.db.0] at version=0
-2024-11-09 05:16:03.418+0000 INFO  [o.n.k.d.Database] [system/00000000] Starting transaction log [D:\Desktop\study\buaa\neo4j_1\neo4j\data\transactions\system\checkpoint.0] at version=0
-2024-11-09 05:16:03.419+0000 INFO  [o.n.k.i.t.l.f.c.CheckpointLogFile] [system/00000000] Scanning log file with version 0 for checkpoint entries
-2024-11-09 05:16:03.429+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [system/00000000] Fulfilling of requirement 'Database unavailable' makes database system available.
-2024-11-09 05:16:03.430+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [system/00000000] DatabaseId{00000000[system]} is ready.
-2024-11-09 05:16:03.626+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index population started: [Index( id=1, name='index_343aff4e', type='LOOKUP', schema=(:<any-labels>), indexProvider='token-lookup-1.0' )]
-2024-11-09 05:16:03.679+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index creation finished for index [Index( id=1, name='index_343aff4e', type='LOOKUP', schema=(:<any-labels>), indexProvider='token-lookup-1.0' )].
-2024-11-09 05:16:03.687+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index population started: [Index( id=2, name='index_f7700477', type='LOOKUP', schema=()-[:<any-types>]-(), indexProvider='token-lookup-1.0' )]
-2024-11-09 05:16:03.700+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index creation finished for index [Index( id=2, name='index_f7700477', type='LOOKUP', schema=()-[:<any-types>]-(), indexProvider='token-lookup-1.0' )].
-2024-11-09 05:16:03.707+0000 INFO  [o.n.k.i.t.l.c.CheckPointerImpl] [system/00000000] Checkpoint triggered by "Database init completed." @ txId: 3, append index: 3 checkpoint started...
-2024-11-09 05:16:03.813+0000 INFO  [o.n.k.i.t.l.c.CheckPointerImpl] [system/00000000] Checkpoint triggered by "Database init completed." @ txId: 3, append index: 3 checkpoint completed in 104ms. Checkpoint flushed 74 pages (0% of total available pages), in 57 IOs. Checkpoint performed with IO limit: unlimited, paused in total 0 times( 0 millis).
-2024-11-09 05:16:03.815+0000 INFO  [o.n.k.i.t.l.p.LogPruningImpl] [system/00000000] No log version pruned. The strategy used was '2 days'. 
-2024-11-09 05:16:03.893+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index population started: [Index( id=3, name='constraint_798238d6', type='RANGE', schema=(:DatabaseName {name, namespace}), indexProvider='range-1.0' )]
-2024-11-09 05:16:03.923+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index creation finished for index [Index( id=3, name='constraint_798238d6', type='RANGE', schema=(:DatabaseName {name, namespace}), indexProvider='range-1.0' )].
-2024-11-09 05:16:03.945+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index population started: [Index( id=4, name='constraint_8014b60a', type='RANGE', schema=(:Database {name}), indexProvider='range-1.0' )]
-2024-11-09 05:16:03.965+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index creation finished for index [Index( id=4, name='constraint_8014b60a', type='RANGE', schema=(:Database {name}), indexProvider='range-1.0' )].
-2024-11-09 05:16:03.983+0000 INFO  [o.n.k.i.a.i.IndexingService] [system/00000000] Constraint Index( id=3, name='constraint_798238d6', type='RANGE', schema=(:Label[1] {PropertyKey[11], PropertyKey[12]}), indexProvider='range-1.0' ) is ONLINE.
-2024-11-09 05:16:03.983+0000 INFO  [o.n.k.i.a.i.IndexingService] [system/00000000] Constraint Index( id=4, name='constraint_8014b60a', type='RANGE', schema=(:Label[2] {PropertyKey[11]}), indexProvider='range-1.0' ) is ONLINE.
-2024-11-09 05:16:04.122+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index population started: [Index( id=7, name='constraint_5789ae3', type='RANGE', schema=(:User {name}), indexProvider='range-1.0' )]
-2024-11-09 05:16:04.151+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index creation finished for index [Index( id=7, name='constraint_5789ae3', type='RANGE', schema=(:User {name}), indexProvider='range-1.0' )].
-2024-11-09 05:16:04.165+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index population started: [Index( id=8, name='constraint_74fad970', type='RANGE', schema=(:User {id}), indexProvider='range-1.0' )]
-2024-11-09 05:16:04.181+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index creation finished for index [Index( id=8, name='constraint_74fad970', type='RANGE', schema=(:User {id}), indexProvider='range-1.0' )].
-2024-11-09 05:16:04.195+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index population started: [Index( id=9, name='auth-constraint', type='RANGE', schema=(:Auth {provider, id}), indexProvider='range-1.0' )]
-2024-11-09 05:16:04.210+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index creation finished for index [Index( id=9, name='auth-constraint', type='RANGE', schema=(:Auth {provider, id}), indexProvider='range-1.0' )].
-2024-11-09 05:16:04.218+0000 INFO  [o.n.k.i.a.i.IndexingService] [system/00000000] Constraint Index( id=7, name='constraint_5789ae3', type='RANGE', schema=(:Label[3] {PropertyKey[11]}), indexProvider='range-1.0' ) is ONLINE.
-2024-11-09 05:16:04.218+0000 INFO  [o.n.k.i.a.i.IndexingService] [system/00000000] Constraint Index( id=8, name='constraint_74fad970', type='RANGE', schema=(:Label[3] {PropertyKey[27]}), indexProvider='range-1.0' ) is ONLINE.
-2024-11-09 05:16:04.218+0000 INFO  [o.n.k.i.a.i.IndexingService] [system/00000000] Constraint Index( id=9, name='auth-constraint', type='RANGE', schema=(:Label[4] {PropertyKey[28], PropertyKey[27]}), indexProvider='range-1.0' ) is ONLINE.
-2024-11-09 05:16:04.219+0000 INFO  [o.n.s.s.s.UserSecurityGraphComponent] Initializing system graph model for component 'security-users' with version -1 and status UNINITIALIZED
-2024-11-09 05:16:04.232+0000 INFO  [o.n.s.s.s.UserSecurityGraphComponent] Setting up initial user from defaults: neo4j
-2024-11-09 05:16:04.233+0000 INFO  [o.n.s.s.a.CommunitySecurityModule] CREATE USER neo4j PASSWORD ****** CHANGE REQUIRED
-2024-11-09 05:16:04.245+0000 INFO  [o.n.s.s.s.UserSecurityGraphComponent] Setting version for 'security-users' to 5
-2024-11-09 05:16:04.247+0000 INFO  [o.n.s.s.s.UserSecurityGraphComponent] After initialization of system graph model component 'security-users' have version 5 and status CURRENT
-2024-11-09 05:16:04.251+0000 INFO  [o.n.s.s.s.UserSecurityGraphComponent] Performing postInitialization step for component 'security-users' with version 5 and status CURRENT
-2024-11-09 05:16:04.255+0000 INFO  [o.n.d.d.DatabaseLifecycles] Creating 'DatabaseId{5657bccb[neo4j]}'.
-2024-11-09 05:16:04.258+0000 INFO  [o.n.d.d.DatabaseLifecycles] Starting 'DatabaseId{5657bccb[neo4j]}'.
-2024-11-09 05:16:04.267+0000 INFO  [o.n.k.i.s.f.RecordFormatSelector] [neo4j/5657bccb] Selected configured format for store D:\Desktop\study\buaa\neo4j_1\neo4j\data\databases\neo4j: RecordFormat:PageAlignedV5_0[aligned-1.1]
-2024-11-09 05:16:04.316+0000 INFO  [o.n.i.d.DiagnosticsManager] [neo4j/5657bccb] 
-                                                                [neo4j/5657bccb] ********************************************************************************
-                                                                [neo4j/5657bccb]                               [ Database: neo4j ]                               
-                                                                [neo4j/5657bccb] ********************************************************************************
-                                                                [neo4j/5657bccb] --------------------------------------------------------------------------------
-                                                                [neo4j/5657bccb]                                   [ Version ]                                   
-                                                                [neo4j/5657bccb] --------------------------------------------------------------------------------
-                                                                [neo4j/5657bccb] DBMS: community record-aligned-1.1
-                                                                [neo4j/5657bccb] Kernel version: 5.24.0
-                                                                [neo4j/5657bccb] 
-                                                                [neo4j/5657bccb] --------------------------------------------------------------------------------
-                                                                [neo4j/5657bccb]                                 [ Store files ]                                 
-                                                                [neo4j/5657bccb] --------------------------------------------------------------------------------
-                                                                [neo4j/5657bccb] Disk space on partition (Total / Free / Free %): 1000186310656 / 221675388928 / 22
-                                                                [neo4j/5657bccb] Storage files stored on file store: NTFS
-                                                                [neo4j/5657bccb] Storage files: (filename : modification date - size)
-                                                                [neo4j/5657bccb]   neostore: 2024-11-09 05:16:04.298+0000 - 8.000KiB
-                                                                [neo4j/5657bccb]   neostore.counts.db: 2024-11-09 05:16:04.300+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.indexstats.db: 2024-11-09 05:16:04.301+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.labeltokenstore.db: 2024-11-09 05:16:04.292+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.labeltokenstore.db.id: 2024-11-09 05:16:04.292+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.labeltokenstore.db.names: 2024-11-09 05:16:04.287+0000 - 8.000KiB
-                                                                [neo4j/5657bccb]   neostore.labeltokenstore.db.names.id: 2024-11-09 05:16:04.286+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.nodestore.db: 2024-11-09 05:16:04.272+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.nodestore.db.id: 2024-11-09 05:16:04.271+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.nodestore.db.labels: 2024-11-09 05:16:04.268+0000 - 8.000KiB
-                                                                [neo4j/5657bccb]   neostore.nodestore.db.labels.id: 2024-11-09 05:16:04.268+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.propertystore.db: 2024-11-09 05:16:04.281+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.propertystore.db.arrays: 2024-11-09 05:16:04.279+0000 - 8.000KiB
-                                                                [neo4j/5657bccb]   neostore.propertystore.db.arrays.id: 2024-11-09 05:16:04.279+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.propertystore.db.id: 2024-11-09 05:16:04.281+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.propertystore.db.index: 2024-11-09 05:16:04.275+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.propertystore.db.index.id: 2024-11-09 05:16:04.275+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.propertystore.db.index.keys: 2024-11-09 05:16:04.273+0000 - 8.000KiB
-                                                                [neo4j/5657bccb]   neostore.propertystore.db.index.keys.id: 2024-11-09 05:16:04.272+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.propertystore.db.strings: 2024-11-09 05:16:04.276+0000 - 8.000KiB
-                                                                [neo4j/5657bccb]   neostore.propertystore.db.strings.id: 2024-11-09 05:16:04.276+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.relationshipgroupstore.db: 2024-11-09 05:16:04.296+0000 - 8.000KiB
-                                                                [neo4j/5657bccb]   neostore.relationshipgroupstore.db.id: 2024-11-09 05:16:04.295+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.relationshipgroupstore.degrees.db: 2024-11-09 05:16:04.300+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.relationshipstore.db: 2024-11-09 05:16:04.282+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.relationshipstore.db.id: 2024-11-09 05:16:04.282+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.relationshiptypestore.db: 2024-11-09 05:16:04.286+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.relationshiptypestore.db.id: 2024-11-09 05:16:04.285+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.relationshiptypestore.db.names: 2024-11-09 05:16:04.283+0000 - 8.000KiB
-                                                                [neo4j/5657bccb]   neostore.relationshiptypestore.db.names.id: 2024-11-09 05:16:04.283+0000 - 0B
-                                                                [neo4j/5657bccb]   neostore.schemastore.db: 2024-11-09 05:16:04.294+0000 - 8.000KiB
-                                                                [neo4j/5657bccb]   neostore.schemastore.db.id: 2024-11-09 05:16:04.293+0000 - 0B
-                                                                [neo4j/5657bccb] Storage summary: 
-                                                                [neo4j/5657bccb]   Total size of store: 72.00KiB
-                                                                [neo4j/5657bccb]   Total size of mapped files: 72.00KiB
-                                                                [neo4j/5657bccb] 
-                                                                [neo4j/5657bccb] --------------------------------------------------------------------------------
-                                                                [neo4j/5657bccb]                               [ Transaction log ]                               
-                                                                [neo4j/5657bccb] --------------------------------------------------------------------------------
-                                                                [neo4j/5657bccb] Transaction log files stored on file store: NTFS
-                                                                [neo4j/5657bccb] Transaction log metadata:
-                                                                [neo4j/5657bccb]  - current kernel version used in transactions: V5_23
-                                                                [neo4j/5657bccb]  - last committed transaction id: 1
-                                                                [neo4j/5657bccb] Transaction log files:
-                                                                [neo4j/5657bccb]  - existing transaction log versions: -1--1
-                                                                [neo4j/5657bccb]  - no transactions found
-                                                                [neo4j/5657bccb] Checkpoint log files:
-                                                                [neo4j/5657bccb]  - existing checkpoint log versions: -1--1
-                                                                [neo4j/5657bccb]  - no checkpoints found
-                                                                [neo4j/5657bccb] 
-                                                                [neo4j/5657bccb] --------------------------------------------------------------------------------
-                                                                [neo4j/5657bccb]                                   [ Id usage ]                                  
-                                                                [neo4j/5657bccb] --------------------------------------------------------------------------------
-                                                                [neo4j/5657bccb] ArrayPropertyStore[neostore.nodestore.db.labels]: used=1 high=0
-                                                                [neo4j/5657bccb] NodeStore[neostore.nodestore.db]: used=0 high=-1
-                                                                [neo4j/5657bccb] StringPropertyStore[neostore.propertystore.db.index.keys]: used=1 high=0
-                                                                [neo4j/5657bccb] PropertyIndexStore[neostore.propertystore.db.index]: used=0 high=-1
-                                                                [neo4j/5657bccb] StringPropertyStore[neostore.propertystore.db.strings]: used=1 high=0
-                                                                [neo4j/5657bccb] ArrayPropertyStore[neostore.propertystore.db.arrays]: used=1 high=0
-                                                                [neo4j/5657bccb] PropertyStore[neostore.propertystore.db]: used=0 high=-1
-                                                                [neo4j/5657bccb] RelationshipStore[neostore.relationshipstore.db]: used=0 high=-1
-                                                                [neo4j/5657bccb] StringPropertyStore[neostore.relationshiptypestore.db.names]: used=1 high=0
-                                                                [neo4j/5657bccb] RelationshipTypeStore[neostore.relationshiptypestore.db]: used=0 high=-1
-                                                                [neo4j/5657bccb] StringPropertyStore[neostore.labeltokenstore.db.names]: used=1 high=0
-                                                                [neo4j/5657bccb] LabelTokenStore[neostore.labeltokenstore.db]: used=0 high=-1
-                                                                [neo4j/5657bccb] SchemaStore[neostore.schemastore.db]: used=1 high=0
-                                                                [neo4j/5657bccb] RelationshipGroupStore[neostore.relationshipgroupstore.db]: used=1 high=0
-                                                                [neo4j/5657bccb] NeoStore[neostore]: used=-1 high=-1
-                                                                [neo4j/5657bccb] 
-                                                                [neo4j/5657bccb] --------------------------------------------------------------------------------
-                                                                [neo4j/5657bccb]                                   [ Metadata ]                                  
-                                                                [neo4j/5657bccb] --------------------------------------------------------------------------------
-                                                                [neo4j/5657bccb] EXTERNAL_STORE_UUID (Database identifier exposed as external store identity. Generated on creation and never updated): 514f5c4f-7850-4dc9-b81b-67d0ac96a494
-                                                                [neo4j/5657bccb] DATABASE_ID (The last used DatabaseId for this database): null
-                                                                [neo4j/5657bccb] LEGACY_STORE_VERSION (Legacy store format version. This field is used from 5.0 onwards only to distinguish non-migrated pre 5.0 metadata stores.): -3523014627327384477
-                                                                [neo4j/5657bccb] STORE_ID (Store ID): StoreId{creationTime=1731129364298, random=160179328476237351, storageEngineName='record', formatName='aligned', majorVersion=1, minorVersion=1}
-                                                                [neo4j/5657bccb] 
-2024-11-09 05:16:04.318+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [neo4j/5657bccb] Requirement `Database unavailable` makes database neo4j unavailable.
-2024-11-09 05:16:04.318+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [neo4j/5657bccb] DatabaseId{5657bccb[neo4j]} is unavailable.
-2024-11-09 05:16:04.320+0000 WARN  [o.n.k.i.s.MetaDataStore] [neo4j/5657bccb] Missing counts store, rebuilding it.
-2024-11-09 05:16:04.320+0000 WARN  [o.n.k.i.s.MetaDataStore] [neo4j/5657bccb] Counts store rebuild completed.
-2024-11-09 05:16:04.325+0000 INFO  [o.n.k.d.Database] [neo4j/5657bccb] Starting transaction log [D:\Desktop\study\buaa\neo4j_1\neo4j\data\transactions\neo4j\neostore.transaction.db.0] at version=0
-2024-11-09 05:16:04.330+0000 INFO  [o.n.k.d.Database] [neo4j/5657bccb] Starting transaction log [D:\Desktop\study\buaa\neo4j_1\neo4j\data\transactions\neo4j\checkpoint.0] at version=0
-2024-11-09 05:16:04.331+0000 INFO  [o.n.k.i.t.l.f.c.CheckpointLogFile] [neo4j/5657bccb] Scanning log file with version 0 for checkpoint entries
-2024-11-09 05:16:04.342+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [neo4j/5657bccb] Fulfilling of requirement 'Database unavailable' makes database neo4j available.
-2024-11-09 05:16:04.342+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [neo4j/5657bccb] DatabaseId{5657bccb[neo4j]} is ready.
-2024-11-09 05:16:04.349+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [neo4j/5657bccb] Index population started: [Index( id=1, name='index_343aff4e', type='LOOKUP', schema=(:<any-labels>), indexProvider='token-lookup-1.0' )]
-2024-11-09 05:16:04.361+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [neo4j/5657bccb] Index creation finished for index [Index( id=1, name='index_343aff4e', type='LOOKUP', schema=(:<any-labels>), indexProvider='token-lookup-1.0' )].
-2024-11-09 05:16:04.364+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [neo4j/5657bccb] Index population started: [Index( id=2, name='index_f7700477', type='LOOKUP', schema=()-[:<any-types>]-(), indexProvider='token-lookup-1.0' )]
-2024-11-09 05:16:04.376+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [neo4j/5657bccb] Index creation finished for index [Index( id=2, name='index_f7700477', type='LOOKUP', schema=()-[:<any-types>]-(), indexProvider='token-lookup-1.0' )].
-2024-11-09 05:16:04.379+0000 INFO  [o.n.k.i.t.l.c.CheckPointerImpl] [neo4j/5657bccb] Checkpoint triggered by "Database init completed." @ txId: 3, append index: 3 checkpoint started...
-2024-11-09 05:16:04.464+0000 INFO  [o.n.k.i.t.l.c.CheckPointerImpl] [neo4j/5657bccb] Checkpoint triggered by "Database init completed." @ txId: 3, append index: 3 checkpoint completed in 84ms. Checkpoint flushed 74 pages (0% of total available pages), in 57 IOs. Checkpoint performed with IO limit: unlimited, paused in total 0 times( 0 millis).
-2024-11-09 05:16:04.464+0000 INFO  [o.n.k.i.t.l.p.LogPruningImpl] [neo4j/5657bccb] No log version pruned. The strategy used was '2 days'. 
-2024-11-09 05:16:04.465+0000 INFO  [o.n.u.UserDataCollector] Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
-2024-11-09 05:16:04.469+0000 INFO  [o.n.g.f.DatabaseManagementServiceFactory] id: 0C754DB17EF2B8523D836540F05985ED097BDA0AFFA8007495D99EE7BF4E652E
-2024-11-09 05:16:04.469+0000 INFO  [o.n.g.f.DatabaseManagementServiceFactory] name: system
-2024-11-09 05:16:04.469+0000 INFO  [o.n.g.f.DatabaseManagementServiceFactory] creationDate: 2024-11-09T05:16:03.201Z
-2024-11-09 05:16:04.482+0000 INFO  [o.n.g.f.DatabaseManagementServiceFactory] Shutdown started
-2024-11-09 05:16:04.483+0000 INFO  [o.n.d.d.DatabaseLifecycles] Stopping 'DatabaseId{5657bccb[neo4j]}'.
-2024-11-09 05:16:04.488+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [neo4j/5657bccb] Requirement `Database unavailable` makes database neo4j unavailable.
-2024-11-09 05:16:04.488+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [neo4j/5657bccb] DatabaseId{5657bccb[neo4j]} is unavailable.
-2024-11-09 05:16:04.489+0000 INFO  [o.n.k.d.Database] [neo4j/5657bccb] Waiting for closing transactions.
-2024-11-09 05:16:04.490+0000 INFO  [o.n.k.d.Database] [neo4j/5657bccb] All transactions are closed.
-2024-11-09 05:16:04.490+0000 INFO  [o.n.k.i.t.l.c.CheckPointerImpl] [neo4j/5657bccb] Checkpoint triggered by "Database shutdown" @ txId: 6, append index: 6 checkpoint started...
-2024-11-09 05:16:04.567+0000 INFO  [o.n.k.i.t.l.c.CheckPointerImpl] [neo4j/5657bccb] Checkpoint triggered by "Database shutdown" @ txId: 6, append index: 6 checkpoint completed in 76ms. Checkpoint flushed 37 pages (0% of total available pages), in 37 IOs. Checkpoint performed with IO limit: unlimited, paused in total 0 times( 0 millis).
-2024-11-09 05:16:04.567+0000 INFO  [o.n.k.i.t.l.p.LogPruningImpl] [neo4j/5657bccb] No log version pruned. The strategy used was '2 days'. 
-2024-11-09 05:16:04.640+0000 INFO  [o.n.d.d.DatabaseLifecycles] Stopped 'DatabaseId{5657bccb[neo4j]}' successfully.
-2024-11-09 05:16:04.640+0000 INFO  [o.n.d.d.DatabaseLifecycles] Stopping 'DatabaseId{00000000[system]}'.
-2024-11-09 05:16:04.640+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [system/00000000] Requirement `Database unavailable` makes database system unavailable.
-2024-11-09 05:16:04.640+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [system/00000000] DatabaseId{00000000[system]} is unavailable.
-2024-11-09 05:16:04.641+0000 INFO  [o.n.k.d.Database] [system/00000000] Waiting for closing transactions.
-2024-11-09 05:16:04.641+0000 INFO  [o.n.k.d.Database] [system/00000000] All transactions are closed.
-2024-11-09 05:16:04.641+0000 INFO  [o.n.k.i.t.l.c.CheckPointerImpl] [system/00000000] Checkpoint triggered by "Database shutdown" @ txId: 41, append index: 41 checkpoint started...
-2024-11-09 05:16:04.758+0000 INFO  [o.n.k.i.t.l.c.CheckPointerImpl] [system/00000000] Checkpoint triggered by "Database shutdown" @ txId: 41, append index: 41 checkpoint completed in 116ms. Checkpoint flushed 73 pages (0% of total available pages), in 73 IOs. Checkpoint performed with IO limit: unlimited, paused in total 0 times( 0 millis).
-2024-11-09 05:16:04.758+0000 INFO  [o.n.k.i.t.l.p.LogPruningImpl] [system/00000000] No log version pruned. The strategy used was '2 days'. 
-2024-11-09 05:16:04.838+0000 INFO  [o.n.d.d.DatabaseLifecycles] Stopped 'DatabaseId{00000000[system]}' successfully.
+2024-11-09 05:30:34.921+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [system/00000000] Requirement `Database unavailable` makes database system unavailable.
+2024-11-09 05:30:34.921+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [system/00000000] DatabaseId{00000000[system]} is unavailable.
+2024-11-09 05:30:34.933+0000 WARN  [o.n.k.i.s.MetaDataStore] [system/00000000] Missing counts store, rebuilding it.
+2024-11-09 05:30:34.938+0000 WARN  [o.n.k.i.s.MetaDataStore] [system/00000000] Counts store rebuild completed.
+2024-11-09 05:30:34.949+0000 INFO  [o.n.k.d.Database] [system/00000000] Starting transaction log [D:\Desktop\study\buaa\neo4j_1\neo4j\data\transactions\system\neostore.transaction.db.0] at version=0
+2024-11-09 05:30:34.960+0000 INFO  [o.n.k.d.Database] [system/00000000] Starting transaction log [D:\Desktop\study\buaa\neo4j_1\neo4j\data\transactions\system\checkpoint.0] at version=0
+2024-11-09 05:30:34.962+0000 INFO  [o.n.k.i.t.l.f.c.CheckpointLogFile] [system/00000000] Scanning log file with version 0 for checkpoint entries
+2024-11-09 05:30:34.972+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [system/00000000] Fulfilling of requirement 'Database unavailable' makes database system available.
+2024-11-09 05:30:34.972+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [system/00000000] DatabaseId{00000000[system]} is ready.
+2024-11-09 05:30:35.153+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index population started: [Index( id=2, name='index_f7700477', type='LOOKUP', schema=()-[:<any-types>]-(), indexProvider='token-lookup-1.0' )]
+2024-11-09 05:30:35.198+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index creation finished for index [Index( id=2, name='index_f7700477', type='LOOKUP', schema=()-[:<any-types>]-(), indexProvider='token-lookup-1.0' )].
+2024-11-09 05:30:35.205+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index population started: [Index( id=1, name='index_343aff4e', type='LOOKUP', schema=(:<any-labels>), indexProvider='token-lookup-1.0' )]
+2024-11-09 05:30:35.218+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index creation finished for index [Index( id=1, name='index_343aff4e', type='LOOKUP', schema=(:<any-labels>), indexProvider='token-lookup-1.0' )].
+2024-11-09 05:30:35.224+0000 INFO  [o.n.k.i.t.l.c.CheckPointerImpl] [system/00000000] Checkpoint triggered by "Database init completed." @ txId: 3, append index: 3 checkpoint started...
+2024-11-09 05:30:35.324+0000 INFO  [o.n.k.i.t.l.c.CheckPointerImpl] [system/00000000] Checkpoint triggered by "Database init completed." @ txId: 3, append index: 3 checkpoint completed in 99ms. Checkpoint flushed 74 pages (0% of total available pages), in 57 IOs. Checkpoint performed with IO limit: unlimited, paused in total 0 times( 0 millis).
+2024-11-09 05:30:35.325+0000 INFO  [o.n.k.i.t.l.p.LogPruningImpl] [system/00000000] No log version pruned. The strategy used was '2 days'. 
+2024-11-09 05:30:35.416+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index population started: [Index( id=3, name='constraint_798238d6', type='RANGE', schema=(:DatabaseName {name, namespace}), indexProvider='range-1.0' )]
+2024-11-09 05:30:35.459+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index creation finished for index [Index( id=3, name='constraint_798238d6', type='RANGE', schema=(:DatabaseName {name, namespace}), indexProvider='range-1.0' )].
+2024-11-09 05:30:35.482+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index population started: [Index( id=4, name='constraint_8014b60a', type='RANGE', schema=(:Database {name}), indexProvider='range-1.0' )]
+2024-11-09 05:30:35.500+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index creation finished for index [Index( id=4, name='constraint_8014b60a', type='RANGE', schema=(:Database {name}), indexProvider='range-1.0' )].
+2024-11-09 05:30:35.517+0000 INFO  [o.n.k.i.a.i.IndexingService] [system/00000000] Constraint Index( id=3, name='constraint_798238d6', type='RANGE', schema=(:Label[1] {PropertyKey[11], PropertyKey[12]}), indexProvider='range-1.0' ) is ONLINE.
+2024-11-09 05:30:35.518+0000 INFO  [o.n.k.i.a.i.IndexingService] [system/00000000] Constraint Index( id=4, name='constraint_8014b60a', type='RANGE', schema=(:Label[2] {PropertyKey[11]}), indexProvider='range-1.0' ) is ONLINE.
+2024-11-09 05:30:35.651+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index population started: [Index( id=7, name='constraint_5789ae3', type='RANGE', schema=(:User {name}), indexProvider='range-1.0' )]
+2024-11-09 05:30:35.669+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index creation finished for index [Index( id=7, name='constraint_5789ae3', type='RANGE', schema=(:User {name}), indexProvider='range-1.0' )].
+2024-11-09 05:30:35.681+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index population started: [Index( id=8, name='constraint_74fad970', type='RANGE', schema=(:User {id}), indexProvider='range-1.0' )]
+2024-11-09 05:30:35.701+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index creation finished for index [Index( id=8, name='constraint_74fad970', type='RANGE', schema=(:User {id}), indexProvider='range-1.0' )].
+2024-11-09 05:30:35.714+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index population started: [Index( id=9, name='auth-constraint', type='RANGE', schema=(:Auth {provider, id}), indexProvider='range-1.0' )]
+2024-11-09 05:30:35.732+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [system/00000000] Index creation finished for index [Index( id=9, name='auth-constraint', type='RANGE', schema=(:Auth {provider, id}), indexProvider='range-1.0' )].
+2024-11-09 05:30:35.739+0000 INFO  [o.n.k.i.a.i.IndexingService] [system/00000000] Constraint Index( id=7, name='constraint_5789ae3', type='RANGE', schema=(:Label[3] {PropertyKey[11]}), indexProvider='range-1.0' ) is ONLINE.
+2024-11-09 05:30:35.739+0000 INFO  [o.n.k.i.a.i.IndexingService] [system/00000000] Constraint Index( id=8, name='constraint_74fad970', type='RANGE', schema=(:Label[3] {PropertyKey[27]}), indexProvider='range-1.0' ) is ONLINE.
+2024-11-09 05:30:35.739+0000 INFO  [o.n.k.i.a.i.IndexingService] [system/00000000] Constraint Index( id=9, name='auth-constraint', type='RANGE', schema=(:Label[4] {PropertyKey[28], PropertyKey[27]}), indexProvider='range-1.0' ) is ONLINE.
+2024-11-09 05:30:35.740+0000 INFO  [o.n.s.s.s.UserSecurityGraphComponent] Initializing system graph model for component 'security-users' with version -1 and status UNINITIALIZED
+2024-11-09 05:30:35.751+0000 INFO  [o.n.s.s.s.UserSecurityGraphComponent] Setting up initial user from defaults: neo4j
+2024-11-09 05:30:35.752+0000 INFO  [o.n.s.s.a.CommunitySecurityModule] CREATE USER neo4j PASSWORD ****** CHANGE REQUIRED
+2024-11-09 05:30:35.764+0000 INFO  [o.n.s.s.s.UserSecurityGraphComponent] Setting version for 'security-users' to 5
+2024-11-09 05:30:35.767+0000 INFO  [o.n.s.s.s.UserSecurityGraphComponent] After initialization of system graph model component 'security-users' have version 5 and status CURRENT
+2024-11-09 05:30:35.771+0000 INFO  [o.n.s.s.s.UserSecurityGraphComponent] Performing postInitialization step for component 'security-users' with version 5 and status CURRENT
+2024-11-09 05:30:35.774+0000 INFO  [o.n.d.d.DatabaseLifecycles] Creating 'DatabaseId{f0e02164[neo4j]}'.
+2024-11-09 05:30:35.777+0000 INFO  [o.n.d.d.DatabaseLifecycles] Starting 'DatabaseId{f0e02164[neo4j]}'.
+2024-11-09 05:30:35.786+0000 INFO  [o.n.k.i.s.f.RecordFormatSelector] [neo4j/f0e02164] Selected configured format for store D:\Desktop\study\buaa\neo4j_1\neo4j\data\databases\neo4j: RecordFormat:PageAlignedV5_0[aligned-1.1]
+2024-11-09 05:30:35.833+0000 INFO  [o.n.i.d.DiagnosticsManager] [neo4j/f0e02164] 
+                                                                [neo4j/f0e02164] ********************************************************************************
+                                                                [neo4j/f0e02164]                               [ Database: neo4j ]                               
+                                                                [neo4j/f0e02164] ********************************************************************************
+                                                                [neo4j/f0e02164] --------------------------------------------------------------------------------
+                                                                [neo4j/f0e02164]                                   [ Version ]                                   
+                                                                [neo4j/f0e02164] --------------------------------------------------------------------------------
+                                                                [neo4j/f0e02164] DBMS: community record-aligned-1.1
+                                                                [neo4j/f0e02164] Kernel version: 5.24.0
+                                                                [neo4j/f0e02164] 
+                                                                [neo4j/f0e02164] --------------------------------------------------------------------------------
+                                                                [neo4j/f0e02164]                                 [ Store files ]                                 
+                                                                [neo4j/f0e02164] --------------------------------------------------------------------------------
+                                                                [neo4j/f0e02164] Disk space on partition (Total / Free / Free %): 1000186310656 / 221675126784 / 22
+                                                                [neo4j/f0e02164] Storage files stored on file store: NTFS
+                                                                [neo4j/f0e02164] Storage files: (filename : modification date - size)
+                                                                [neo4j/f0e02164]   neostore: 2024-11-09 05:30:35.815+0000 - 8.000KiB
+                                                                [neo4j/f0e02164]   neostore.counts.db: 2024-11-09 05:30:35.817+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.indexstats.db: 2024-11-09 05:30:35.819+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.labeltokenstore.db: 2024-11-09 05:30:35.809+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.labeltokenstore.db.id: 2024-11-09 05:30:35.809+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.labeltokenstore.db.names: 2024-11-09 05:30:35.807+0000 - 8.000KiB
+                                                                [neo4j/f0e02164]   neostore.labeltokenstore.db.names.id: 2024-11-09 05:30:35.806+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.nodestore.db: 2024-11-09 05:30:35.791+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.nodestore.db.id: 2024-11-09 05:30:35.790+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.nodestore.db.labels: 2024-11-09 05:30:35.787+0000 - 8.000KiB
+                                                                [neo4j/f0e02164]   neostore.nodestore.db.labels.id: 2024-11-09 05:30:35.787+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.propertystore.db: 2024-11-09 05:30:35.801+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.propertystore.db.arrays: 2024-11-09 05:30:35.798+0000 - 8.000KiB
+                                                                [neo4j/f0e02164]   neostore.propertystore.db.arrays.id: 2024-11-09 05:30:35.798+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.propertystore.db.id: 2024-11-09 05:30:35.800+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.propertystore.db.index: 2024-11-09 05:30:35.794+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.propertystore.db.index.id: 2024-11-09 05:30:35.794+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.propertystore.db.index.keys: 2024-11-09 05:30:35.792+0000 - 8.000KiB
+                                                                [neo4j/f0e02164]   neostore.propertystore.db.index.keys.id: 2024-11-09 05:30:35.791+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.propertystore.db.strings: 2024-11-09 05:30:35.795+0000 - 8.000KiB
+                                                                [neo4j/f0e02164]   neostore.propertystore.db.strings.id: 2024-11-09 05:30:35.795+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.relationshipgroupstore.db: 2024-11-09 05:30:35.813+0000 - 8.000KiB
+                                                                [neo4j/f0e02164]   neostore.relationshipgroupstore.db.id: 2024-11-09 05:30:35.813+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.relationshipgroupstore.degrees.db: 2024-11-09 05:30:35.818+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.relationshipstore.db: 2024-11-09 05:30:35.802+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.relationshipstore.db.id: 2024-11-09 05:30:35.802+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.relationshiptypestore.db: 2024-11-09 05:30:35.806+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.relationshiptypestore.db.id: 2024-11-09 05:30:35.805+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.relationshiptypestore.db.names: 2024-11-09 05:30:35.803+0000 - 8.000KiB
+                                                                [neo4j/f0e02164]   neostore.relationshiptypestore.db.names.id: 2024-11-09 05:30:35.803+0000 - 0B
+                                                                [neo4j/f0e02164]   neostore.schemastore.db: 2024-11-09 05:30:35.810+0000 - 8.000KiB
+                                                                [neo4j/f0e02164]   neostore.schemastore.db.id: 2024-11-09 05:30:35.810+0000 - 0B
+                                                                [neo4j/f0e02164] Storage summary: 
+                                                                [neo4j/f0e02164]   Total size of store: 72.00KiB
+                                                                [neo4j/f0e02164]   Total size of mapped files: 72.00KiB
+                                                                [neo4j/f0e02164] 
+                                                                [neo4j/f0e02164] --------------------------------------------------------------------------------
+                                                                [neo4j/f0e02164]                               [ Transaction log ]                               
+                                                                [neo4j/f0e02164] --------------------------------------------------------------------------------
+                                                                [neo4j/f0e02164] Transaction log files stored on file store: NTFS
+                                                                [neo4j/f0e02164] Transaction log metadata:
+                                                                [neo4j/f0e02164]  - current kernel version used in transactions: V5_23
+                                                                [neo4j/f0e02164]  - last committed transaction id: 1
+                                                                [neo4j/f0e02164] Transaction log files:
+                                                                [neo4j/f0e02164]  - existing transaction log versions: -1--1
+                                                                [neo4j/f0e02164]  - no transactions found
+                                                                [neo4j/f0e02164] Checkpoint log files:
+                                                                [neo4j/f0e02164]  - existing checkpoint log versions: -1--1
+                                                                [neo4j/f0e02164]  - no checkpoints found
+                                                                [neo4j/f0e02164] 
+                                                                [neo4j/f0e02164] --------------------------------------------------------------------------------
+                                                                [neo4j/f0e02164]                                   [ Id usage ]                                  
+                                                                [neo4j/f0e02164] --------------------------------------------------------------------------------
+                                                                [neo4j/f0e02164] ArrayPropertyStore[neostore.nodestore.db.labels]: used=1 high=0
+                                                                [neo4j/f0e02164] NodeStore[neostore.nodestore.db]: used=0 high=-1
+                                                                [neo4j/f0e02164] StringPropertyStore[neostore.propertystore.db.index.keys]: used=1 high=0
+                                                                [neo4j/f0e02164] PropertyIndexStore[neostore.propertystore.db.index]: used=0 high=-1
+                                                                [neo4j/f0e02164] StringPropertyStore[neostore.propertystore.db.strings]: used=1 high=0
+                                                                [neo4j/f0e02164] ArrayPropertyStore[neostore.propertystore.db.arrays]: used=1 high=0
+                                                                [neo4j/f0e02164] PropertyStore[neostore.propertystore.db]: used=0 high=-1
+                                                                [neo4j/f0e02164] RelationshipStore[neostore.relationshipstore.db]: used=0 high=-1
+                                                                [neo4j/f0e02164] StringPropertyStore[neostore.relationshiptypestore.db.names]: used=1 high=0
+                                                                [neo4j/f0e02164] RelationshipTypeStore[neostore.relationshiptypestore.db]: used=0 high=-1
+                                                                [neo4j/f0e02164] StringPropertyStore[neostore.labeltokenstore.db.names]: used=1 high=0
+                                                                [neo4j/f0e02164] LabelTokenStore[neostore.labeltokenstore.db]: used=0 high=-1
+                                                                [neo4j/f0e02164] SchemaStore[neostore.schemastore.db]: used=1 high=0
+                                                                [neo4j/f0e02164] RelationshipGroupStore[neostore.relationshipgroupstore.db]: used=1 high=0
+                                                                [neo4j/f0e02164] NeoStore[neostore]: used=-1 high=-1
+                                                                [neo4j/f0e02164] 
+                                                                [neo4j/f0e02164] --------------------------------------------------------------------------------
+                                                                [neo4j/f0e02164]                                   [ Metadata ]                                  
+                                                                [neo4j/f0e02164] --------------------------------------------------------------------------------
+                                                                [neo4j/f0e02164] EXTERNAL_STORE_UUID (Database identifier exposed as external store identity. Generated on creation and never updated): 83edb726-0a2b-4352-bad4-de97be8ba2a7
+                                                                [neo4j/f0e02164] DATABASE_ID (The last used DatabaseId for this database): null
+                                                                [neo4j/f0e02164] LEGACY_STORE_VERSION (Legacy store format version. This field is used from 5.0 onwards only to distinguish non-migrated pre 5.0 metadata stores.): -3523014627327384477
+                                                                [neo4j/f0e02164] STORE_ID (Store ID): StoreId{creationTime=1731130235815, random=8305033976221440179, storageEngineName='record', formatName='aligned', majorVersion=1, minorVersion=1}
+                                                                [neo4j/f0e02164] 
+2024-11-09 05:30:35.835+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [neo4j/f0e02164] Requirement `Database unavailable` makes database neo4j unavailable.
+2024-11-09 05:30:35.835+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [neo4j/f0e02164] DatabaseId{f0e02164[neo4j]} is unavailable.
+2024-11-09 05:30:35.837+0000 WARN  [o.n.k.i.s.MetaDataStore] [neo4j/f0e02164] Missing counts store, rebuilding it.
+2024-11-09 05:30:35.837+0000 WARN  [o.n.k.i.s.MetaDataStore] [neo4j/f0e02164] Counts store rebuild completed.
+2024-11-09 05:30:35.841+0000 INFO  [o.n.k.d.Database] [neo4j/f0e02164] Starting transaction log [D:\Desktop\study\buaa\neo4j_1\neo4j\data\transactions\neo4j\neostore.transaction.db.0] at version=0
+2024-11-09 05:30:35.845+0000 INFO  [o.n.k.d.Database] [neo4j/f0e02164] Starting transaction log [D:\Desktop\study\buaa\neo4j_1\neo4j\data\transactions\neo4j\checkpoint.0] at version=0
+2024-11-09 05:30:35.846+0000 INFO  [o.n.k.i.t.l.f.c.CheckpointLogFile] [neo4j/f0e02164] Scanning log file with version 0 for checkpoint entries
+2024-11-09 05:30:35.849+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [neo4j/f0e02164] Fulfilling of requirement 'Database unavailable' makes database neo4j available.
+2024-11-09 05:30:35.849+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [neo4j/f0e02164] DatabaseId{f0e02164[neo4j]} is ready.
+2024-11-09 05:30:35.855+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [neo4j/f0e02164] Index population started: [Index( id=2, name='index_f7700477', type='LOOKUP', schema=()-[:<any-types>]-(), indexProvider='token-lookup-1.0' )]
+2024-11-09 05:30:35.867+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [neo4j/f0e02164] Index creation finished for index [Index( id=2, name='index_f7700477', type='LOOKUP', schema=()-[:<any-types>]-(), indexProvider='token-lookup-1.0' )].
+2024-11-09 05:30:35.870+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [neo4j/f0e02164] Index population started: [Index( id=1, name='index_343aff4e', type='LOOKUP', schema=(:<any-labels>), indexProvider='token-lookup-1.0' )]
+2024-11-09 05:30:35.882+0000 INFO  [o.n.k.i.a.i.IndexPopulationJob] [neo4j/f0e02164] Index creation finished for index [Index( id=1, name='index_343aff4e', type='LOOKUP', schema=(:<any-labels>), indexProvider='token-lookup-1.0' )].
+2024-11-09 05:30:35.885+0000 INFO  [o.n.k.i.t.l.c.CheckPointerImpl] [neo4j/f0e02164] Checkpoint triggered by "Database init completed." @ txId: 3, append index: 3 checkpoint started...
+2024-11-09 05:30:35.978+0000 INFO  [o.n.k.i.t.l.c.CheckPointerImpl] [neo4j/f0e02164] Checkpoint triggered by "Database init completed." @ txId: 3, append index: 3 checkpoint completed in 92ms. Checkpoint flushed 74 pages (0% of total available pages), in 57 IOs. Checkpoint performed with IO limit: unlimited, paused in total 0 times( 0 millis).
+2024-11-09 05:30:35.978+0000 INFO  [o.n.k.i.t.l.p.LogPruningImpl] [neo4j/f0e02164] No log version pruned. The strategy used was '2 days'. 
+2024-11-09 05:30:35.979+0000 INFO  [o.n.u.UserDataCollector] Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
+2024-11-09 05:30:35.981+0000 INFO  [o.n.g.f.DatabaseManagementServiceFactory] id: DE057ABDBBB1332244BC8343A5FE128DAA230FB2E715BB98D23260D7732857C4
+2024-11-09 05:30:35.981+0000 INFO  [o.n.g.f.DatabaseManagementServiceFactory] name: system
+2024-11-09 05:30:35.981+0000 INFO  [o.n.g.f.DatabaseManagementServiceFactory] creationDate: 2024-11-09T05:30:34.766Z
+2024-11-09 05:30:35.994+0000 INFO  [o.n.g.f.DatabaseManagementServiceFactory] Shutdown started
+2024-11-09 05:30:35.994+0000 INFO  [o.n.d.d.DatabaseLifecycles] Stopping 'DatabaseId{f0e02164[neo4j]}'.
+2024-11-09 05:30:35.999+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [neo4j/f0e02164] Requirement `Database unavailable` makes database neo4j unavailable.
+2024-11-09 05:30:35.999+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [neo4j/f0e02164] DatabaseId{f0e02164[neo4j]} is unavailable.
+2024-11-09 05:30:36.000+0000 INFO  [o.n.k.d.Database] [neo4j/f0e02164] Waiting for closing transactions.
+2024-11-09 05:30:36.001+0000 INFO  [o.n.k.d.Database] [neo4j/f0e02164] All transactions are closed.
+2024-11-09 05:30:36.001+0000 INFO  [o.n.k.i.t.l.c.CheckPointerImpl] [neo4j/f0e02164] Checkpoint triggered by "Database shutdown" @ txId: 6, append index: 6 checkpoint started...
+2024-11-09 05:30:36.114+0000 INFO  [o.n.k.i.t.l.c.CheckPointerImpl] [neo4j/f0e02164] Checkpoint triggered by "Database shutdown" @ txId: 6, append index: 6 checkpoint completed in 113ms. Checkpoint flushed 37 pages (0% of total available pages), in 37 IOs. Checkpoint performed with IO limit: unlimited, paused in total 0 times( 0 millis).
+2024-11-09 05:30:36.114+0000 INFO  [o.n.k.i.t.l.p.LogPruningImpl] [neo4j/f0e02164] No log version pruned. The strategy used was '2 days'. 
+2024-11-09 05:30:36.190+0000 INFO  [o.n.d.d.DatabaseLifecycles] Stopped 'DatabaseId{f0e02164[neo4j]}' successfully.
+2024-11-09 05:30:36.190+0000 INFO  [o.n.d.d.DatabaseLifecycles] Stopping 'DatabaseId{00000000[system]}'.
+2024-11-09 05:30:36.190+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [system/00000000] Requirement `Database unavailable` makes database system unavailable.
+2024-11-09 05:30:36.190+0000 INFO  [o.n.k.a.DatabaseAvailabilityGuard] [system/00000000] DatabaseId{00000000[system]} is unavailable.
+2024-11-09 05:30:36.191+0000 INFO  [o.n.k.d.Database] [system/00000000] Waiting for closing transactions.
+2024-11-09 05:30:36.191+0000 INFO  [o.n.k.d.Database] [system/00000000] All transactions are closed.
+2024-11-09 05:30:36.191+0000 INFO  [o.n.k.i.t.l.c.CheckPointerImpl] [system/00000000] Checkpoint triggered by "Database shutdown" @ txId: 41, append index: 41 checkpoint started...
+2024-11-09 05:30:36.311+0000 INFO  [o.n.k.i.t.l.c.CheckPointerImpl] [system/00000000] Checkpoint triggered by "Database shutdown" @ txId: 41, append index: 41 checkpoint completed in 119ms. Checkpoint flushed 73 pages (0% of total available pages), in 73 IOs. Checkpoint performed with IO limit: unlimited, paused in total 0 times( 0 millis).
+2024-11-09 05:30:36.311+0000 INFO  [o.n.k.i.t.l.p.LogPruningImpl] [system/00000000] No log version pruned. The strategy used was '2 days'. 
+2024-11-09 05:30:36.393+0000 INFO  [o.n.d.d.DatabaseLifecycles] Stopped 'DatabaseId{00000000[system]}' successfully.

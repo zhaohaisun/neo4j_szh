@@ -1,6 +1,6 @@
 package org.example;
 
-import org.antlr.v4.runtime.misc.Pair;
+import javafx.util.Pair;
 import org.neo4j.cypher.internal.expressions.In;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -25,6 +25,8 @@ public class CSVImporter {
     }
 
     public static void importCSV(File csvFile, GraphDatabaseService db) {
+        Node crossNodesStart = null;
+        Node crossNodesEnd = null;
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             String line;
             boolean isFirstLine = true;
@@ -50,10 +52,8 @@ public class CSVImporter {
                 int outCount = Integer.parseInt(tokens[7]);
                 int direction = Integer.parseInt(tokens[8]);
 
-                Map<Pair<Integer, Integer>, Pair<Integer, Integer>> map = new HashMap<>(); // 存储路链->起始和终止节点
+                Map<Pair<Integer, Integer>, Pair<Integer, Integer>> map = new HashMap<>(); // 存储路链（grid, chain）->起始和终止节点(startIndex, endIndex)
                 int startNode = 0, endNode = 0;
-                Node crossNodesStart = null;
-                Node crossNodesEnd = null;
 
                 // 遍历所有的in_connections和out_connections，找是否和外面有连接
                 List<RoadConnection> in_connections = new ArrayList<>();
@@ -84,6 +84,7 @@ public class CSVImporter {
                 if(map.containsKey(new Pair<>(gridId, chainId))) { // 如果主链在map中，则忽略
                     continue;
                 }
+
                 if((!hasConnectIn) && (!hasConnectOut)) {
                     try (Transaction tx = db.beginTx()) {
                         crossNodesStart = tx.createNode(Label.label("crossNode"));
@@ -98,7 +99,7 @@ public class CSVImporter {
                 else if(hasConnectIn && !hasConnectOut) {
                     for(RoadConnection inConnection : in_connections) {
                         if(map.containsKey(new Pair<>(inConnection.getGridId(), inConnection.getChainId()))) {
-                            startNode = map.get(new Pair<>(inConnection.getGridId(), inConnection.getChainId())).b;
+                            startNode = map.get(new Pair<>(inConnection.getGridId(), inConnection.getChainId())).getValue();
                             try (Transaction tx = db.beginTx()) {
                                 crossNodesStart = tx.findNode(Label.label("crossNode"), "index", startNode);
                                 endNode = nodeindex;
@@ -112,7 +113,7 @@ public class CSVImporter {
                 else if(!hasConnectIn && hasConnectOut) {
                     for(RoadConnection outConnection : out_connections) {
                         if(map.containsKey(new Pair<>(outConnection.getGridId(), outConnection.getChainId()))) {
-                            endNode = map.get(new Pair<>(outConnection.getGridId(), outConnection.getChainId())).a;
+                            endNode = map.get(new Pair<>(outConnection.getGridId(), outConnection.getChainId())).getKey();
                             try (Transaction tx = db.beginTx()) {
                                 crossNodesEnd = tx.findNode(Label.label("crossNode"), "index", endNode);
                                 startNode = nodeindex;
@@ -126,15 +127,22 @@ public class CSVImporter {
                 else {
                     for(RoadConnection inConnection : in_connections) {
                         if(map.containsKey(new Pair<>(inConnection.getGridId(), inConnection.getChainId()))) {
-                            startNode = map.get(new Pair<>(inConnection.getGridId(), inConnection.getChainId())).b;
+                            startNode = map.get(new Pair<>(inConnection.getGridId(), inConnection.getChainId())).getValue();
                             try (Transaction tx = db.beginTx()) {
                                 crossNodesStart = tx.findNode(Label.label("crossNode"), "index", startNode);
+                                tx.commit();
                             }
+                            break;
                         }
                     }
                     for(RoadConnection outConnection : out_connections) {
                         if(map.containsKey(new Pair<>(outConnection.getGridId(), outConnection.getChainId()))) {
-                            endNode = map.get(new Pair<>(outConnection.getGridId(), outConnection.getChainId())).a;
+                            endNode = map.get(new Pair<>(outConnection.getGridId(), outConnection.getChainId())).getKey();
+                            try (Transaction tx = db.beginTx()) {
+                                crossNodesEnd = tx.findNode(Label.label("crossNode"), "index", endNode);
+                                tx.commit();
+                            }
+                            break;
                         }
                     }
                 }
@@ -159,8 +167,8 @@ public class CSVImporter {
                         Relationship road = crossNodesStartIn.createRelationshipTo(crossNodesStart, RelType.ROAD_TO);
                         road.setProperty("gridId", inConnection.getGridId());
                         road.setProperty("chainId", inConnection.getChainId());
-                        tx.commit();
                         map.put(new Pair<>(inConnection.getGridId(), inConnection.getChainId()), new Pair<>(startNodeIn, startNode));
+                        tx.commit();
                     }
                 }
                 // 添加出链（对 主链来说）
@@ -176,8 +184,8 @@ public class CSVImporter {
                         Relationship road = crossNodesEnd.createRelationshipTo(crossNodesEndOut, RelType.ROAD_TO);
                         road.setProperty("gridId", outConnection.getGridId());
                         road.setProperty("chainId", outConnection.getChainId());
-                        tx.commit();
                         map.put(new Pair<>(outConnection.getGridId(), outConnection.getChainId()), new Pair<>(endNode, endNodeOut));
+                        tx.commit();
                     }
                 }
             }

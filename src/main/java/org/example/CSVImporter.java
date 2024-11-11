@@ -68,100 +68,45 @@ public class CSVImporter {
                     Node crossNodesStart = null;
                     Node crossNodesEnd = null;
                     int startNode = 0, endNode = 0;
-
-                    // 主链的起始节点与结束节点创建
-                    if (map.containsKey(new Pair<>(gridId, chainId))) { // 如果主链在map中，则忽略
-                        continue;
-                    }
-
                     boolean hasConnectIn = in_connections.stream().anyMatch(
                             inConn -> map.containsKey(new Pair<>(inConn.getGridId(), inConn.getChainId())));
                     boolean hasConnectOut = out_connections.stream().anyMatch(
                             outConn -> map.containsKey(new Pair<>(outConn.getGridId(), outConn.getChainId())));
 
-                    if (!hasConnectIn && !hasConnectOut) {
-                        crossNodesStart = tx.createNode(Label.label("crossNode"));
-                        crossNodesStart.setProperty("index", nodeindex++);
-                        startNode = (int) crossNodesStart.getProperty("index");
-
-                        crossNodesEnd = tx.createNode(Label.label("crossNode"));
-                        crossNodesEnd.setProperty("index", nodeindex++);
-                        endNode = (int) crossNodesEnd.getProperty("index");
-                    } else if (hasConnectIn && !hasConnectOut) {
-                        for (RoadConnection inConnection : in_connections) {
+                    if(hasConnectIn) { // 查找是否有入链连接
+                        for(RoadConnection inConnection : in_connections) {
                             if (map.containsKey(new Pair<>(inConnection.getGridId(), inConnection.getChainId()))) {
                                 startNode = map.get(new Pair<>(inConnection.getGridId(), inConnection.getChainId())).getValue();
-                                crossNodesStart = tx.findNode(Label.label("crossNode"), "index", startNode);
-                                crossNodesEnd = tx.createNode(Label.label("crossNode"));
-                                crossNodesEnd.setProperty("index", nodeindex++);
-                                endNode = (int) crossNodesEnd.getProperty("index");
+                                crossNodesStart = tx.findNode(Label.label("CrossNode"), "id", startNode);
                                 break;
                             }
                         }
-                    } else if (!hasConnectIn && hasConnectOut) {
-                        for (RoadConnection outConnection : out_connections) {
+                    }
+                    else { // 没有连接的话，新建一个节点
+                        crossNodesStart = tx.createNode(Label.label("CrossNode"));
+                        startNode = nodeindex++;
+                        crossNodesStart.setProperty("id", startNode);
+                    }
+
+                    if(hasConnectOut) { // 查找是否有出链连接
+                        for(RoadConnection outConnection : out_connections) {
                             if (map.containsKey(new Pair<>(outConnection.getGridId(), outConnection.getChainId()))) {
-                                endNode = map.get(new Pair<>(outConnection.getGridId(), outConnection.getChainId())).getKey();
-                                crossNodesEnd = tx.findNode(Label.label("crossNode"), "index", endNode);
-                                crossNodesStart = tx.createNode(Label.label("crossNode"));
-                                crossNodesStart.setProperty("index", nodeindex++);
-                                startNode = (int) crossNodesStart.getProperty("index");
-                                break;
-                            }
-                        }
-                    } else {
-                        for (RoadConnection inConnection : in_connections) {
-                            if (map.containsKey(new Pair<>(inConnection.getGridId(), inConnection.getChainId()))) {
-                                startNode = map.get(new Pair<>(inConnection.getGridId(), inConnection.getChainId())).getValue();
-                                crossNodesStart = tx.findNode(Label.label("crossNode"), "index", startNode);
-                                break;
-                            }
-                        }
-                        for (RoadConnection outConnection : out_connections) {
-                            if (map.containsKey(new Pair<>(outConnection.getGridId(), outConnection.getChainId()))) {
-                                endNode = map.get(new Pair<>(outConnection.getGridId(), outConnection.getChainId())).getKey();
-                                crossNodesEnd = tx.findNode(Label.label("crossNode"), "index", endNode);
+                                endNode = map.get(new Pair<>(outConnection.getGridId(), outConnection.getChainId())).getValue();
+                                crossNodesEnd = tx.findNode(Label.label("CrossNode"), "id", endNode);
                                 break;
                             }
                         }
                     }
-
-                    // 创建主链的关系
-                    if (crossNodesStart != null && crossNodesEnd != null) {
-                        Relationship road = crossNodesStart.createRelationshipTo(crossNodesEnd, RelType.ROAD_TO);
-                        road.setProperty("gridId", gridId);
-                        road.setProperty("chainId", chainId);
-                        map.put(new Pair<>(gridId, chainId), new Pair<>(startNode, endNode));
+                    else { // 没有连接的话，新建一个节点
+                        crossNodesEnd = tx.createNode(Label.label("CrossNode"));
+                        endNode = nodeindex++;
+                        crossNodesEnd.setProperty("id", endNode);
                     }
-
-                    // 添加入链（对 主链来说）
-                    for (RoadConnection inConnection : in_connections) {
-                        if (map.containsKey(new Pair<>(inConnection.getGridId(), inConnection.getChainId()))) {
-                            continue;
-                        }
-                        Node crossNodesStartIn = tx.createNode(Label.label("crossNode"));
-                        crossNodesStartIn.setProperty("index", nodeindex++);
-                        Relationship road = crossNodesStartIn.createRelationshipTo(crossNodesStart, RelType.ROAD_TO);
-                        road.setProperty("gridId", inConnection.getGridId());
-                        road.setProperty("chainId", inConnection.getChainId());
-                        map.put(new Pair<>(inConnection.getGridId(), inConnection.getChainId()),
-                                new Pair<>((int) crossNodesStartIn.getProperty("index"), startNode));
-                    }
-
-                    // 添加出链（对 主链来说）
-                    for (RoadConnection outConnection : out_connections) {
-                        if (map.containsKey(new Pair<>(outConnection.getGridId(), outConnection.getChainId()))) {
-                            continue;
-                        }
-                        Node crossNodesEndOut = tx.createNode(Label.label("crossNode"));
-                        crossNodesEndOut.setProperty("index", nodeindex++);
-                        Relationship road = crossNodesEnd.createRelationshipTo(crossNodesEndOut, RelType.ROAD_TO);
-                        road.setProperty("gridId", outConnection.getGridId());
-                        road.setProperty("chainId", outConnection.getChainId());
-                        map.put(new Pair<>(outConnection.getGridId(), outConnection.getChainId()),
-                                new Pair<>(endNode, (int) crossNodesEndOut.getProperty("index")));
-                    }
-
+                    map.put(new Pair<>(gridId, chainId), new Pair<>(startNode, endNode));
+                    Relationship road = crossNodesStart.createRelationshipTo(crossNodesEnd, RelType.ROAD_TO);
+                    //road.setProperty("id", id);
+                    road.setProperty("gridId", gridId);
+                    road.setProperty("chainId", chainId);
                     tx.commit();
                 }
             }

@@ -24,8 +24,9 @@ public class CSVImporter {
         ROAD_TO
     }
 
+    static Map<Pair<Integer, Integer>, Pair<Integer, Integer>> map = new HashMap<>(); // 存储路链（grid, chain）-> 起始和终止节点(startIndex, endIndex)
+
     public static void importCSV(File csvFile, GraphDatabaseService db) {
-        Map<Pair<Integer, Integer>, Pair<Integer, Integer>> map = new HashMap<>(); // 存储路链（grid, chain）-> 起始和终止节点(startIndex, endIndex)
         int nodeindex = 0;
 
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
@@ -115,6 +116,43 @@ public class CSVImporter {
         }
     }
 
+    public static void importDyRoadInfo (File DyRoadInfoFile, GraphDatabaseService db) {
+        try (BufferedReader br = new BufferedReader(new FileReader(DyRoadInfoFile))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // Split the line by spaces
+                String[] parts = line.split(" ");
+                // Split the second part by underscore to get two fields
+                String[] subParts = parts[1].split("_");
+                // Parse each part into an int and remove leading zeros
+                int time = Integer.parseInt(parts[0]);
+                int gridId = Integer.parseInt(subParts[0]);
+                int chainId = Integer.parseInt(subParts[1]);
+                int travelTime = Integer.parseInt(parts[2]);
+                int congestionLevel = Integer.parseInt(parts[3]); // 拥堵程度
+                int numberOfVehicles = Integer.parseInt(parts[4]); // 链路车辆数
+
+                try (Transaction tx = db.beginTx()) {
+                    int startIndex = map.get(new Pair<>(gridId, chainId)).getKey();
+                    int endIndex = map.get(new Pair<>(gridId, chainId)).getValue();
+                    Node startNode = tx.findNode(Label.label("CrossNode"), "id", startIndex);
+                    Node endNode = tx.findNode(Label.label("CrossNode"), "id", endIndex);
+                    Relationship road = startNode.createRelationshipTo(endNode, RelType.ROAD_TO);
+                    road.setProperty("time", time);
+                    road.setProperty("gridId", gridId);
+                    road.setProperty("chainId", chainId);
+                    road.setProperty("travelTime", travelTime);
+                    road.setProperty("congestionLevel", congestionLevel);
+                    road.setProperty("numberOfVehicles", numberOfVehicles);
+                    tx.commit();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private static RoadConnection parseRoadConnection(String[] tokens, int startIndex) {
         int gridId = Integer.parseInt(tokens[startIndex]);
         int chainId = Integer.parseInt(tokens[startIndex + 1]);
@@ -126,10 +164,12 @@ public class CSVImporter {
 
 
     public static void main(final String[] args) throws IOException {
-        File csvFile = new File("D:\\Desktop\\study\\buaa\\neo4j_1\\src\\main\\java\\org\\example\\Topo.csv");
+        File csvFile = new File("src\\main\\java\\org\\example\\Topo.csv");
+        File DyRoadInfoFile = new File("src\\main\\java\\org\\example\\100501.csv");
         neo4j neo4j_Bj = new neo4j();
         neo4j_Bj.createDb();
         importCSV(csvFile, neo4j_Bj.graphDb);
+        //importDyRoadInfo(DyRoadInfoFile, neo4j_Bj.graphDb);
         neo4j_Bj.shutDown();
     }
 }

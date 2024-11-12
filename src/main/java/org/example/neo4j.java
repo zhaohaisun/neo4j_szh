@@ -61,12 +61,20 @@ public class neo4j {
         // tag::startDb[]
         managementService = new DatabaseManagementServiceBuilder(databaseDirectory).build();
         graphDb = managementService.database(DEFAULT_DATABASE_NAME);
-        System.out.println("Database is running ...");
+        System.out.println("New database is created ...");
         registerShutdownHook(managementService);
         // end::startDb[]
 
     }
 
+    void startDb() {
+        // tag::startDb[]
+        managementService = new DatabaseManagementServiceBuilder(databaseDirectory).build();
+        graphDb = managementService.database(DEFAULT_DATABASE_NAME);
+        System.out.println("Database is running ...");
+        registerShutdownHook(managementService);
+        // end::startDb[]
+    }
 
     void shutDown() {
         System.out.println();

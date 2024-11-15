@@ -28,44 +28,45 @@ public class CSVImporter {
 
     public static void importCSV(File csvFile, GraphDatabaseService db) {
         int nodeindex = 0;
-
+        //int cnt = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             String line;
             boolean isFirstLine = true;
 
-            // Skip the first line as it contains field names
-            while ((line = br.readLine()) != null) {
-                if (isFirstLine) {
-                    isFirstLine = false;
-                    continue; // Skip the header line
-                }
+            try (Transaction tx = db.beginTx()) {
+                // Skip the first line as it contains field names
+                while ((line = br.readLine()) != null) {
+                    //cnt++;
+                    if (isFirstLine) {
+                        isFirstLine = false;
+                        continue; // Skip the header line
+                    }
 
-                String[] tokens = line.split(",");
+                    String[] tokens = line.split(",");
 
-                // Extract basic RoadChain information (first 9 fields)
-                int id = Integer.parseInt(tokens[0]);
-                int gridId = Integer.parseInt(tokens[1]);
-                int chainId = Integer.parseInt(tokens[2]);
-                int inCount = Integer.parseInt(tokens[6]);
-                int outCount = Integer.parseInt(tokens[7]);
+                    // Extract basic RoadChain information (first 9 fields)
+                    int id = Integer.parseInt(tokens[0]);
+                    int gridId = Integer.parseInt(tokens[1]);
+                    int chainId = Integer.parseInt(tokens[2]);
+                    int inCount = Integer.parseInt(tokens[6]);
+                    int outCount = Integer.parseInt(tokens[7]);
 
-                // 遍历所有的in_connections和out_connections，找是否和外面有连接
-                List<RoadConnection> in_connections = new ArrayList<>();
-                List<RoadConnection> out_connections = new ArrayList<>();
-                int currentIndex = 9;
+                    // 遍历所有的in_connections和out_connections，找是否和外面有连接
+                    List<RoadConnection> in_connections = new ArrayList<>();
+                    List<RoadConnection> out_connections = new ArrayList<>();
+                    int currentIndex = 9;
 
-                for (int i = 0; i < inCount; i++) {
-                    RoadConnection inConnection = parseRoadConnection(tokens, currentIndex);
-                    in_connections.add(inConnection);
-                    currentIndex += 5;
-                }
-                for (int i = 0; i < outCount; i++) {
-                    RoadConnection outConnection = parseRoadConnection(tokens, currentIndex);
-                    out_connections.add(outConnection);
-                    currentIndex += 5;
-                }
+                    for (int i = 0; i < inCount; i++) {
+                        RoadConnection inConnection = parseRoadConnection(tokens, currentIndex);
+                        in_connections.add(inConnection);
+                        currentIndex += 5;
+                    }
+                    for (int i = 0; i < outCount; i++) {
+                        RoadConnection outConnection = parseRoadConnection(tokens, currentIndex);
+                        out_connections.add(outConnection);
+                        currentIndex += 5;
+                    }
 
-                try (Transaction tx = db.beginTx()) {
                     Node crossNodesStart = null;
                     Node crossNodesEnd = null;
                     int startNode = 0, endNode = 0;
@@ -108,18 +109,25 @@ public class CSVImporter {
                     //road.setProperty("id", id);
                     road.setProperty("gridId", gridId);
                     road.setProperty("chainId", chainId);
-                    tx.commit();
+                    //if(cnt % 10 == 0) {tx.commit();}
                 }
+                tx.commit();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("Imported CSV file to Neo4j");
     }
 
     public static void importDyRoadInfo (File DyRoadInfoFile, GraphDatabaseService db) {
+        int cnt = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(DyRoadInfoFile))) {
             String line;
             while ((line = br.readLine()) != null) {
+                cnt++;
+                if(cnt % 100000 == 0) {
+                    System.out.println(cnt);
+                }
                 // Split the line by spaces
                 String[] parts = line.split(" ");
                 // Split the second part by underscore to get two fields
@@ -164,6 +172,8 @@ public class CSVImporter {
 
 
     public static void main(final String[] args) throws IOException {
+        long startTime = System.currentTimeMillis();  // 获取当前时间（毫秒）
+
         File csvFile = new File("src\\main\\java\\org\\example\\Topo.csv");
         File DyRoadInfoFile = new File("src\\main\\java\\org\\example\\100501.csv");
         neo4j neo4j_Bj = new neo4j();
@@ -171,5 +181,8 @@ public class CSVImporter {
         importCSV(csvFile, neo4j_Bj.graphDb);
         //importDyRoadInfo(DyRoadInfoFile, neo4j_Bj.graphDb);
         neo4j_Bj.shutDown();
+
+        long endTime = System.currentTimeMillis();  // 获取执行后的时间（毫秒）
+        System.out.println("Execution Time: " + ((endTime - startTime) / 1000) + " seconds");
     }
 }

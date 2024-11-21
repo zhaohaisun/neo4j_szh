@@ -26,96 +26,111 @@ public class CSVImporter {
 
     static Map<Pair<Integer, Integer>, Pair<Integer, Integer>> map = new HashMap<>(); // 存储路链（grid, chain）-> 起始和终止节点(startIndex, endIndex)
 
+    final static int numOfTransactions = 50;
+
     public static void importCSV(File csvFile, GraphDatabaseService db) {
         int nodeindex = 0;
-        //int cnt = 0;
+        int cnt = 0;
+
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             String line;
             boolean isFirstLine = true;
 
-            try (Transaction tx = db.beginTx()) {
-                // Skip the first line as it contains field names
-                while ((line = br.readLine()) != null) {
-                    //cnt++;
-                    if (isFirstLine) {
-                        isFirstLine = false;
-                        continue; // Skip the header line
-                    }
-
-                    String[] tokens = line.split(",");
-
-                    // Extract basic RoadChain information (first 9 fields)
-                    int id = Integer.parseInt(tokens[0]);
-                    int gridId = Integer.parseInt(tokens[1]);
-                    int chainId = Integer.parseInt(tokens[2]);
-                    int inCount = Integer.parseInt(tokens[6]);
-                    int outCount = Integer.parseInt(tokens[7]);
-
-                    // 遍历所有的in_connections和out_connections，找是否和外面有连接
-                    List<RoadConnection> in_connections = new ArrayList<>();
-                    List<RoadConnection> out_connections = new ArrayList<>();
-                    int currentIndex = 9;
-
-                    for (int i = 0; i < inCount; i++) {
-                        RoadConnection inConnection = parseRoadConnection(tokens, currentIndex);
-                        in_connections.add(inConnection);
-                        currentIndex += 5;
-                    }
-                    for (int i = 0; i < outCount; i++) {
-                        RoadConnection outConnection = parseRoadConnection(tokens, currentIndex);
-                        out_connections.add(outConnection);
-                        currentIndex += 5;
-                    }
-
-                    Node crossNodesStart = null;
-                    Node crossNodesEnd = null;
-                    int startNode = 0, endNode = 0;
-                    boolean hasConnectIn = in_connections.stream().anyMatch(
-                            inConn -> map.containsKey(new Pair<>(inConn.getGridId(), inConn.getChainId())));
-                    boolean hasConnectOut = out_connections.stream().anyMatch(
-                            outConn -> map.containsKey(new Pair<>(outConn.getGridId(), outConn.getChainId())));
-
-                    if(hasConnectIn) { // 查找是否有入链连接
-                        for(RoadConnection inConnection : in_connections) {
-                            if (map.containsKey(new Pair<>(inConnection.getGridId(), inConnection.getChainId()))) {
-                                startNode = map.get(new Pair<>(inConnection.getGridId(), inConnection.getChainId())).getValue();
-                                crossNodesStart = tx.findNode(Label.label("CrossNode"), "id", startNode);
-                                break;
-                            }
-                        }
-                    }
-                    else { // 没有连接的话，新建一个节点
-                        crossNodesStart = tx.createNode(Label.label("CrossNode"));
-                        startNode = nodeindex++;
-                        crossNodesStart.setProperty("id", startNode);
-                    }
-
-                    if(hasConnectOut) { // 查找是否有出链连接
-                        for(RoadConnection outConnection : out_connections) {
-                            if (map.containsKey(new Pair<>(outConnection.getGridId(), outConnection.getChainId()))) {
-                                endNode = map.get(new Pair<>(outConnection.getGridId(), outConnection.getChainId())).getValue();
-                                crossNodesEnd = tx.findNode(Label.label("CrossNode"), "id", endNode);
-                                break;
-                            }
-                        }
-                    }
-                    else { // 没有连接的话，新建一个节点
-                        crossNodesEnd = tx.createNode(Label.label("CrossNode"));
-                        endNode = nodeindex++;
-                        crossNodesEnd.setProperty("id", endNode);
-                    }
-                    map.put(new Pair<>(gridId, chainId), new Pair<>(startNode, endNode));
-                    Relationship road = crossNodesStart.createRelationshipTo(crossNodesEnd, RelType.ROAD_TO);
-                    //road.setProperty("id", id);
-                    road.setProperty("gridId", gridId);
-                    road.setProperty("chainId", chainId);
-                    //if(cnt % 10 == 0) {tx.commit();}
+            // 启动第一个事务
+            Transaction tx = db.beginTx();
+            // 跳过文件的第一行，第一行是字段名
+            while ((line = br.readLine()) != null) {
+                cnt++;
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue;  // 跳过表头
                 }
-                tx.commit();
+
+                String[] tokens = line.split(",");
+
+                // 提取基础的道路链信息
+                int id = Integer.parseInt(tokens[0]);
+                int gridId = Integer.parseInt(tokens[1]);
+                int chainId = Integer.parseInt(tokens[2]);
+                int inCount = Integer.parseInt(tokens[6]);
+                int outCount = Integer.parseInt(tokens[7]);
+
+                // 解析 in 和 out 连接
+                List<RoadConnection> in_connections = new ArrayList<>();
+                List<RoadConnection> out_connections = new ArrayList<>();
+                int currentIndex = 9;
+                for (int i = 0; i < inCount; i++) {
+                    RoadConnection inConnection = parseRoadConnection(tokens, currentIndex);
+                    in_connections.add(inConnection);
+                    currentIndex += 5;
+                }
+                for (int i = 0; i < outCount; i++) {
+                    RoadConnection outConnection = parseRoadConnection(tokens, currentIndex);
+                    out_connections.add(outConnection);
+                    currentIndex += 5;
+                }
+
+                Node crossNodesStart = null;
+                Node crossNodesEnd = null;
+                int startNode = 0, endNode = 0;
+
+                boolean hasConnectIn = in_connections.stream().anyMatch(
+                        inConn -> map.containsKey(new Pair<>(inConn.getGridId(), inConn.getChainId())));
+                boolean hasConnectOut = out_connections.stream().anyMatch(
+                        outConn -> map.containsKey(new Pair<>(outConn.getGridId(), outConn.getChainId())));
+
+                if (hasConnectIn) {
+                    for (RoadConnection inConnection : in_connections) {
+                        if (map.containsKey(new Pair<>(inConnection.getGridId(), inConnection.getChainId()))) {
+                            startNode = map.get(new Pair<>(inConnection.getGridId(), inConnection.getChainId())).getValue();
+                            crossNodesStart = tx.findNode(Label.label("CrossNode"), "id", startNode);
+                            break;
+                        }
+                    }
+                } else {
+                    crossNodesStart = tx.createNode(Label.label("CrossNode"));
+                    startNode = nodeindex++;
+                    crossNodesStart.setProperty("id", startNode);
+                }
+
+                if (hasConnectOut) {
+                    for (RoadConnection outConnection : out_connections) {
+                        if (map.containsKey(new Pair<>(outConnection.getGridId(), outConnection.getChainId()))) {
+                            endNode = map.get(new Pair<>(outConnection.getGridId(), outConnection.getChainId())).getValue();
+                            crossNodesEnd = tx.findNode(Label.label("CrossNode"), "id", endNode);
+                            break;
+                        }
+                    }
+                } else {
+                    crossNodesEnd = tx.createNode(Label.label("CrossNode"));
+                    endNode = nodeindex++;
+                    crossNodesEnd.setProperty("id", endNode);
+                }
+
+                map.put(new Pair<>(gridId, chainId), new Pair<>(startNode, endNode));
+
+                // 创建关系
+                Relationship road = crossNodesStart.createRelationshipTo(crossNodesEnd, RelType.ROAD_TO);
+                road.setProperty("gridId", gridId);
+                road.setProperty("chainId", chainId);
+
+                // 批量提交逻辑
+                if (cnt % numOfTransactions == 0) {  // 每numOfTransactions个记录提交一次
+                    tx.commit();
+                    tx.close();
+
+                    // 提交后重新开始一个新的事务
+                    tx = db.beginTx();
+                    // 清空待处理列表，准备下一个批次
+                    cnt = 0;
+                }
             }
+            // 提交剩余的数据
+            tx.commit();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         System.out.println("Imported CSV file to Neo4j");
     }
 

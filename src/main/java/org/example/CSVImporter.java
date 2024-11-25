@@ -9,6 +9,7 @@ import org.neo4j.graphdb.Transaction;
 //import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.RelationshipType;
+import org.neo4j.graphdb.schema.Schema;
 import scala.Int;
 
 import java.io.BufferedReader;
@@ -25,12 +26,23 @@ public class CSVImporter {
     }
 
     static Map<Pair<Integer, Integer>, Pair<Integer, Integer>> map = new HashMap<>(); // 存储路链（grid, chain）-> 起始和终止节点(startIndex, endIndex)
+    //static Map<Integer, Node> nodeMap = new HashMap<>(); // 存储节点id -> 节点
 
-    final static int numOfTransactions = 50;
+    final static int numOfTransactions = 5;
 
     public static void importCSV(File csvFile, GraphDatabaseService db) {
         int nodeindex = 0;
         int cnt = 0;
+        int cntCommitNumbers = 0;
+        try (Transaction tx = db.beginTx()) {
+            Schema schema = tx.schema();
+            // 为 CrossNode 标签的 id 属性创建唯一约束
+            schema.constraintFor(Label.label("CrossNode"))
+                    .assertPropertyIsUnique("id")
+                    .create();
+            tx.commit();
+            System.out.println("Unique constraint on 'id' created successfully.");
+        }
 
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             String line;
@@ -117,12 +129,11 @@ public class CSVImporter {
                 // 批量提交逻辑
                 if (cnt % numOfTransactions == 0) {  // 每numOfTransactions个记录提交一次
                     tx.commit();
-                    tx.close();
+                    //tx.close();
+                    cntCommitNumbers++;
 
                     // 提交后重新开始一个新的事务
                     tx = db.beginTx();
-                    // 清空待处理列表，准备下一个批次
-                    cnt = 0;
                 }
             }
             // 提交剩余的数据
@@ -132,17 +143,22 @@ public class CSVImporter {
         }
 
         System.out.println("Imported CSV file to Neo4j");
+        System.out.println(cntCommitNumbers);
     }
 
     public static void importDyRoadInfo (File DyRoadInfoFile, GraphDatabaseService db) {
-        int cnt = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(DyRoadInfoFile))) {
+            Map<Integer, Node> nodeCache = new HashMap<>();
+            long startTime = System.currentTimeMillis();  // 获取当前时间（毫秒）
             String line;
+            Transaction tx = db.beginTx(); // 开始事务
+            int numOfTransactions = 1000;
+            int cnt = 0;
+            long findMapTime = 0, findNodetime = 0;
+            long setTime = 0;
+
             while ((line = br.readLine()) != null) {
                 cnt++;
-                if(cnt % 100000 == 0) {
-                    System.out.println(cnt);
-                }
                 // Split the line by spaces
                 String[] parts = line.split(" ");
                 // Split the second part by underscore to get two fields
@@ -155,26 +171,74 @@ public class CSVImporter {
                 int congestionLevel = Integer.parseInt(parts[3]); // 拥堵程度
                 int numberOfVehicles = Integer.parseInt(parts[4]); // 链路车辆数
 
-                try (Transaction tx = db.beginTx()) {
-                    int startIndex = map.get(new Pair<>(gridId, chainId)).getKey();
-                    int endIndex = map.get(new Pair<>(gridId, chainId)).getValue();
-                    Node startNode = tx.findNode(Label.label("CrossNode"), "id", startIndex);
-                    Node endNode = tx.findNode(Label.label("CrossNode"), "id", endIndex);
-                    Relationship road = startNode.createRelationshipTo(endNode, RelType.ROAD_TO);
-                    road.setProperty("time", time);
-                    road.setProperty("gridId", gridId);
-                    road.setProperty("chainId", chainId);
-                    road.setProperty("travelTime", travelTime);
-                    road.setProperty("congestionLevel", congestionLevel);
-                    road.setProperty("numberOfVehicles", numberOfVehicles);
+                long findMapStartTime = System.currentTimeMillis();
+                int startIndex = map.get(new Pair<>(gridId, chainId)).getKey();
+                int endIndex = map.get(new Pair<>(gridId, chainId)).getValue();
+                long findMapEndTime = System.currentTimeMillis();
+                findMapTime += findMapEndTime - findMapStartTime;
+
+                long findNodeStartTime = System.currentTimeMillis();
+                //Node startNode = tx.findNode(Label.label("CrossNode"), "id", startIndex);
+                //Node endNode = tx.findNode(Label.label("CrossNode"), "id", endIndex);
+                Node startNode, endNode;
+
+                if(nodeCache.containsKey(startIndex)) {
+                    startNode = nodeCache.get(startIndex);
+                } else {
+                    startNode = tx.findNode(Label.label("CrossNode"), "id", startIndex);
+                    nodeCache.put(startIndex, startNode);
+                }
+
+                if(nodeCache.containsKey(endIndex)) {
+                    endNode = nodeCache.get(endIndex);
+                } else {
+                    endNode = tx.findNode(Label.label("CrossNode"), "id", endIndex);
+                    nodeCache.put(endIndex, endNode);
+                }
+
+                long findNodeEndTime = System.currentTimeMillis();
+                findNodetime += findNodeEndTime - findNodeStartTime;
+
+                long setStartTime = System.currentTimeMillis();
+                Relationship road = startNode.createRelationshipTo(endNode, RelType.ROAD_TO);
+                road.setProperty("time", time);
+                road.setProperty("gridId", gridId);
+                road.setProperty("chainId", chainId);
+                road.setProperty("travelTime", travelTime);
+                road.setProperty("congestionLevel", congestionLevel);
+                road.setProperty("numberOfVehicles", numberOfVehicles);
+                long setEndTime = System.currentTimeMillis();
+                setTime += setEndTime - setStartTime;
+
+                if (cnt % numOfTransactions == 0) {  // 每numOfTransactions个记录提交一次
+                    long startTransTime = System.currentTimeMillis();  // 获取当前时间（毫秒）
                     tx.commit();
+                    long endTransTime = System.currentTimeMillis();  // 获取执行后的时间（毫秒）
+                    System.out.print("Transaction Time: " + (endTransTime - startTransTime) + " milliseconds ");
+
+                    //System.out.print("Find Time: " + findTime + " milliseconds ");
+                    System.out.print("Find Map Time: " + findMapTime + " milliseconds ");
+                    System.out.print("Find Node Time: " + findNodetime + " milliseconds ");
+                    System.out.print("Set Time: " + setTime + " milliseconds ");
+
+                    findMapTime = 0;
+                    findNodetime = 0;
+                    setTime = 0;
+                    nodeCache.clear();
+
+                    long currentTime = System.currentTimeMillis();  // 获取当前时间（毫秒）
+                    System.out.println("Total Used Time: " + (currentTime - startTime)  + " milliseconds");
+                    tx = db.beginTx(); // 提交后重新开始一个新的事务
+                }
+                if(cnt == 1000000) { // 最多1000个事务就停止
+                    return;
                 }
             }
+            tx.commit();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 
     private static RoadConnection parseRoadConnection(String[] tokens, int startIndex) {
         int gridId = Integer.parseInt(tokens[startIndex]);
@@ -187,17 +251,17 @@ public class CSVImporter {
 
 
     public static void main(final String[] args) throws IOException {
-        long startTime = System.currentTimeMillis();  // 获取当前时间（毫秒）
-
+        //long startTime = System.currentTimeMillis();  // 获取当前时间（毫秒）
+        System.out.println("Current Time: " + new Date());
         File csvFile = new File("src\\main\\java\\org\\example\\Topo.csv");
         File DyRoadInfoFile = new File("src\\main\\java\\org\\example\\100501.csv");
         neo4j neo4j_Bj = new neo4j();
         neo4j_Bj.createDb();
         importCSV(csvFile, neo4j_Bj.graphDb);
-        //importDyRoadInfo(DyRoadInfoFile, neo4j_Bj.graphDb);
+        importDyRoadInfo(DyRoadInfoFile, neo4j_Bj.graphDb);
         neo4j_Bj.shutDown();
 
-        long endTime = System.currentTimeMillis();  // 获取执行后的时间（毫秒）
-        System.out.println("Execution Time: " + ((endTime - startTime) / 1000) + " seconds");
+        //long endTime = System.currentTimeMillis();  // 获取执行后的时间（毫秒）
+        //System.out.println("Execution Time: " + ((endTime - startTime) / 1000) + " seconds");
     }
 }

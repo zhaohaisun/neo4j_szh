@@ -1,0 +1,31 @@
+[33meb25819[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m HEAD@{0}: commit: Delete 100501.csv
+[33m19be60c[m HEAD@{1}: commit: Update .gitignore
+[33mcd6c60b[m HEAD@{2}: commit: submit
+[33ma49ece0[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{3}: commit: Update .gitignore
+[33m84db1b9[m HEAD@{4}: commit: submit
+[33mc36312b[m HEAD@{5}: commit: submit
+[33m01ec711[m HEAD@{6}: commit: update
+[33m187b812[m HEAD@{7}: commit: commit
+[33m519c1fb[m HEAD@{8}: commit: Update README.md
+[33maa04196[m HEAD@{9}: commit: update
+[33m14ed2b0[m HEAD@{10}: commit: Update README.md
+[33m6f762b3[m HEAD@{11}: commit: fine
+[33mf2b4733[m HEAD@{12}: commit: Update README.md
+[33me655320[m HEAD@{13}: commit: Update README.md
+[33mfe65c7e[m HEAD@{14}: commit: success 1st edition
+[33mdac5f59[m HEAD@{15}: commit: rollback
+[33m8ce240e[m HEAD@{16}: commit: update
+[33m4d37175[m HEAD@{17}: commit: origin condition
+[33mfdcf821[m HEAD@{18}: commit: update readme
+[33m35dab43[m HEAD@{19}: commit: ignore unimportant properties
+[33m53df41b[m HEAD@{20}: commit: update
+[33mf7098ec[m HEAD@{21}: pull --ff --recurse-submodules --progress origin: Fast-forward
+[33m59e948d[m HEAD@{22}: commit: Update README.md
+[33m05b7d34[m HEAD@{23}: commit: Update README.md
+[33m7c028b8[m HEAD@{24}: commit: readme
+[33m5b9d423[m HEAD@{25}: commit: Update README.md
+[33m0769790[m HEAD@{26}: commit: commit
+[33m47b2f6e[m HEAD@{27}: commit: commit
+[33ma7379da[m HEAD@{28}: commit: commit
+[33m6053dec[m HEAD@{29}: Branch: renamed refs/heads/master to refs/heads/main
+[33m6053dec[m HEAD@{31}: commit (initial): Initial commit

@@ -20,6 +20,7 @@ import java.util.*;
 
 
 public class CSVImporter {
+    static neo4j neo4j_Bj = new neo4j();
 
     private enum RelType implements RelationshipType {
         ROAD_TO
@@ -198,9 +199,6 @@ public class CSVImporter {
                     nodeCache.clear();
                     tx = db.beginTx(); // 提交后重新开始一个新的事务
                 }
-                if(cnt == 1000000) { // 最多1000个事务就停止
-                    return;
-                }
             }
             tx.commit();
         } catch (IOException e) {
@@ -216,15 +214,5 @@ public class CSVImporter {
         int length = Integer.parseInt(tokens[startIndex + 3]);
         int direction = Integer.parseInt(tokens[startIndex + 4]);
         return new RoadConnection(gridId, chainId, index, length, direction);
-    }
-
-    public static void main(final String[] args) throws IOException {
-        File csvFile = new File("src\\main\\java\\org\\example\\Topo.csv");
-        File DyRoadInfoFile = new File("src\\main\\java\\org\\example\\100501.csv");
-        neo4j neo4j_Bj = new neo4j();
-        neo4j_Bj.createDb();
-        importCSV(csvFile, neo4j_Bj.graphDb);
-        importDyRoadInfo(DyRoadInfoFile, neo4j_Bj.graphDb);
-        neo4j_Bj.shutDown();
     }
 }

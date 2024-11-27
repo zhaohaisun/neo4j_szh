@@ -3,6 +3,8 @@ package org.example;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.Node;
 
 import static org.example.CSVImporter.neo4j_Bj;
 
@@ -20,24 +22,28 @@ public class HistoricalSnapshotQuery {
 
     public Map<String, Object> snapshot(GraphDatabaseService graphDb, String tp, String time) {
         Map<String, Object> result = new HashMap<>();
-        
-        // 构建Cypher查询
-        String query = 
-            "MATCH (start)-[r:ROAD_TO]->(end) " +
-            "WHERE r.time = $time " +
-            "RETURN start.name AS startNode, end.name AS endNode, r." + tp + " AS value";
 
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("time", time);
-
-        // 执行查询
         try (Transaction tx = graphDb.beginTx()) {
-            Result queryResult = tx.execute(query, parameters);
-            while (queryResult.hasNext()) {
-                Map<String, Object> row = queryResult.next();
-                String entity = row.get("startNode") + "->" + row.get("endNode");
-                Object value = row.get("value");
-                result.put(entity, value);
+            // 获取所有关系并过滤
+            for (Relationship relationship : tx.getAllRelationships()) {
+                if (relationship.getType().name().equals("ROAD_TO")) {
+                    // 检查时间属性
+                    String relTime = (String) relationship.getProperty("time", "");
+                    if (relTime.equals(time)) {
+                        // 获取起始和终止节点
+                        Node startNode = relationship.getStartNode();
+                        Node endNode = relationship.getEndNode();
+                        
+                        // 构建实体标识符
+                        String entity = startNode.getProperty("id") + "->" + endNode.getProperty("id");
+                        
+                        // 获取指定属性值
+                        if (relationship.hasProperty(tp)) {
+                            Object value = relationship.getProperty(tp);
+                            result.put(entity, value);
+                        }
+                    }
+                }
             }
             tx.commit();
         }

@@ -10,12 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HistoricalSnapshotQuery {
-
-    private GraphDatabaseService graphDb;
-
-    public HistoricalSnapshotQuery(GraphDatabaseService graphDb) {
-        this.graphDb = graphDb;
-    }
     /* 历史快照查询
      * snapshot(TG, tp, t) -> <(entity_1, value_1), ..., (entity_n, value_n)>
     public Map<String, Object> snapshot(String tp, int time) {
@@ -53,7 +47,7 @@ public class HistoricalSnapshotQuery {
 
     // 使用示例
     public static void main(String[] args) {
-        HistoricalSnapshotQuery query = new HistoricalSnapshotQuery(neo4j_Bj.graphDb);
+        HistoricalSnapshotQuery query = new HistoricalSnapshotQuery();
         Map<String, Object> snapshot = query.snapshot(neo4j_Bj.graphDb, "congestionLevel", "05010005");
         snapshot.forEach((entity, value) -> 
             System.out.println("Road " + entity + " congestion level: " + value));

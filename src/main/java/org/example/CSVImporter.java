@@ -161,9 +161,9 @@ public class CSVImporter {
                 int time = Integer.parseInt(parts[0]);
                 int gridId = Integer.parseInt(subParts[0]);
                 int chainId = Integer.parseInt(subParts[1]);
-                int travelTime = Integer.parseInt(parts[2]);
-                int congestionLevel = Integer.parseInt(parts[3]); // 拥堵程度
-                int numberOfVehicles = Integer.parseInt(parts[4]); // 链路车辆数
+                int congestionLevel = Integer.parseInt(parts[2]); // 拥堵程度
+                int numberOfVehicles = Integer.parseInt(parts[3]); // 链路车辆数
+                int travelTime = Integer.parseInt(parts[4]); // 旅行时间
 
                 int startIndex = map.get(new Pair<>(gridId, chainId)).getKey();
                 int endIndex = map.get(new Pair<>(gridId, chainId)).getValue();
@@ -190,7 +190,7 @@ public class CSVImporter {
                 road.setProperty("time", time);
                 road.setProperty("gridId", gridId);
                 road.setProperty("chainId", chainId);
-                road.setProperty("travelTime", travelTime);
+                road.setProperty("travelTime", travelTime); 
                 road.setProperty("congestionLevel", congestionLevel);
                 road.setProperty("numberOfVehicles", numberOfVehicles);
 

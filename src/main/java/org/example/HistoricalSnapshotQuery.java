@@ -10,6 +10,7 @@ import static org.example.CSVImporter.neo4j_Bj;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class HistoricalSnapshotQuery {
     /* 历史快照查询
@@ -23,18 +24,12 @@ public class HistoricalSnapshotQuery {
     public Map<String, Integer> snapshot(GraphDatabaseService graphDb, String tp, int time) {
         System.out.println("Start querying historical snapshot ...");
         Map<String, Integer> result = new HashMap<>();
-        int cntOfRoad = 0, cntOfCorrectRoad = 0;
         try (Transaction tx = graphDb.beginTx()) {
             // 获取所有关系并过滤
             for (Relationship relationship : tx.getAllRelationships()) {
                 if (relationship.getType().name().equals("ROAD_TO")) {
-                    cntOfRoad++;
                     // 检查时间属性
                     int relTime = (int)relationship.getProperty("time", 0); // 默认值为""
-                    /*if(relTime == 0) {
-                        System.out.println("Error: time property is not found.");
-                        continue;
-                    }*/
                     if (relTime == time) {
                         // 获取起始和终止节点
                         Node startNode = relationship.getStartNode();
@@ -53,15 +48,20 @@ public class HistoricalSnapshotQuery {
             }
             tx.commit();
         }
-        System.out.println("Total number of roads: " + cntOfRoad);
         return result;
     }
 
-    // 使用示例
+    // 使用
     public static void main(String[] args) {
         neo4j_Bj.startDb();
         HistoricalSnapshotQuery query = new HistoricalSnapshotQuery();
-        Map<String, Integer> snapshot = query.snapshot(neo4j_Bj.graphDb, "congestionLevel", 05010005);
+        System.out.println("Please input the time property and the time in two line: ");
+        Scanner scanner = new Scanner(System.in);
+        String tpInput = scanner.nextLine();
+        String tInput = scanner.nextLine();
+        int tint = Integer.parseInt(tInput);
+        System.out.println("Querying historical snapshot ...");
+        Map<String, Integer> snapshot = query.snapshot(neo4j_Bj.graphDb, tpInput, tint);
         snapshot.forEach((entity, value) -> 
             System.out.println("Road " + entity + " congestion level: " + value));
         neo4j_Bj.shutDown();

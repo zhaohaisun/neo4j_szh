@@ -20,16 +20,22 @@ public class HistoricalSnapshotQuery {
      * 返回: (entity, value)组成的集合，entity表示点/边，value为该点/边在时间t的tp属性值
      */
 
-    public Map<String, Object> snapshot(GraphDatabaseService graphDb, String tp, String time) {
-        Map<String, Object> result = new HashMap<>();
-
+    public Map<String, Integer> snapshot(GraphDatabaseService graphDb, String tp, int time) {
+        System.out.println("Start querying historical snapshot ...");
+        Map<String, Integer> result = new HashMap<>();
+        int cntOfRoad = 0, cntOfCorrectRoad = 0;
         try (Transaction tx = graphDb.beginTx()) {
             // 获取所有关系并过滤
             for (Relationship relationship : tx.getAllRelationships()) {
                 if (relationship.getType().name().equals("ROAD_TO")) {
+                    cntOfRoad++;
                     // 检查时间属性
-                    String relTime = (String) relationship.getProperty("time", "");
-                    if (relTime.equals(time)) {
+                    int relTime = (int)relationship.getProperty("time", 0); // 默认值为""
+                    /*if(relTime == 0) {
+                        System.out.println("Error: time property is not found.");
+                        continue;
+                    }*/
+                    if (relTime == time) {
                         // 获取起始和终止节点
                         Node startNode = relationship.getStartNode();
                         Node endNode = relationship.getEndNode();
@@ -39,7 +45,7 @@ public class HistoricalSnapshotQuery {
                         
                         // 获取指定属性值
                         if (relationship.hasProperty(tp)) {
-                            Object value = relationship.getProperty(tp);
+                            int value = (int)relationship.getProperty(tp);
                             result.put(entity, value);
                         }
                     }
@@ -47,15 +53,17 @@ public class HistoricalSnapshotQuery {
             }
             tx.commit();
         }
-
+        System.out.println("Total number of roads: " + cntOfRoad);
         return result;
     }
 
     // 使用示例
     public static void main(String[] args) {
+        neo4j_Bj.startDb();
         HistoricalSnapshotQuery query = new HistoricalSnapshotQuery();
-        Map<String, Object> snapshot = query.snapshot(neo4j_Bj.graphDb, "congestionLevel", "05010005");
+        Map<String, Integer> snapshot = query.snapshot(neo4j_Bj.graphDb, "congestionLevel", 05010005);
         snapshot.forEach((entity, value) -> 
             System.out.println("Road " + entity + " congestion level: " + value));
+        neo4j_Bj.shutDown();
     }
 }
